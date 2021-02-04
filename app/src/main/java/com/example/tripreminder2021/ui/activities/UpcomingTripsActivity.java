@@ -1,4 +1,5 @@
 package com.example.tripreminder2021.ui.activities;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,8 +26,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -140,15 +143,27 @@ public class UpcomingTripsActivity extends AppCompatActivity {
                     Log.i("TAG", "onNavigationItemSelected: hhhhhhhhhhhhhhh");
                     Log.i("TAG", "logoutt"+FirebaseAuth.getInstance().getCurrentUser());
 
-                    //Navigation here
-                   // signOut() method here
-                    FirebaseAuth.getInstance().signOut();
-                    Log.i("TAG", "logouthhhhhhhhht"+FirebaseAuth.getInstance().getCurrentUser());
-                    sharedPreferencesManager.setUserLogin(false);
-                    drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                    Intent mainIntent = new Intent(UpcomingTripsActivity.this, Activity_Login.class);
-                    startActivity(mainIntent);
-                    finish();
+                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(UpcomingTripsActivity.this);
+                    alertDialogBuilder.setMessage("Sure you want to  log out");
+                    alertDialogBuilder.setPositiveButton("yes", (dialog, which) -> {
+                        FirebaseAuth.getInstance().signOut();
+                        Log.i("TAG", "logouthhhhhhhhht"+FirebaseAuth.getInstance().getCurrentUser());
+                        sharedPreferencesManager.setUserLogin(false);
+                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                        Intent mainIntent = new Intent(UpcomingTripsActivity.this, Activity_Login.class);
+                        startActivity(mainIntent);
+                        finish();
+                    });
+
+                    alertDialogBuilder.setNegativeButton("Cancel",
+                            (arg0, arg1) -> {
+                            });
+
+                    //Showing the alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+
+
 
                     return true;
                 } else if (menuItem.getItemId() == R.id.nav_home) {

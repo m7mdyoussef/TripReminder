@@ -22,7 +22,6 @@ import java.util.ArrayList;
 public class HistoryRepository {
 
     private MutableLiveData<ArrayList<TripModel>> trips=new MutableLiveData<>();
-    private MutableLiveData<ArrayList<TripModel>> tripsReport=new MutableLiveData<>();
     private static HistoryRepository instance;
 
 
@@ -91,45 +90,5 @@ public class HistoryRepository {
         });
         return trips;
     }
-    public MutableLiveData<ArrayList<TripModel>> getTripsReport(String from,String to) {
-        ArrayList<TripModel> allTripsReport=new ArrayList<>();
 
-        FirebaseDatabase database=FirebaseDatabase.getInstance();
-        DatabaseReference reference=database.getReference();
-        Query query=reference.child(Constants.TRIP_CHILD_NAME).
-                child(Constants.CURRENT_USER_ID).
-                orderByChild("date").
-                startAt(from).endAt(to);
-
-
-        Log.i("TAG", "getReportedTrip: "+Constants.TRIP_CHILD_NAME);
-        Log.i("TAG", "getReportedTrip: "+Constants.CURRENT_USER_ID);
-        Log.i("TAG", "getReportedTrip   start: "+from);
-        Log.i("TAG", "getReportedTrip     end : "+to);
-
-
-
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists())
-                {
-                    allTripsReport.clear();
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        allTripsReport.add(dataSnapshot.getValue(TripModel.class));
-                    }
-                    Log.i("TAG", "onDataChangeall trip size: "+allTripsReport.size());
-                    tripsReport.postValue(allTripsReport);
-                    Log.i("TAG", "date: "+allTripsReport.get(0).getDate());
-                }
-                else
-                    Log.i("TAG", "onDataChange: nnnnnnnnnnnnnnnnnnnn");
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        return tripsReport;
-    }
 }
