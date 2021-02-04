@@ -63,6 +63,7 @@ public class UpcomingRecyclerViewAdapter extends RecyclerView.Adapter<UpcomingRe
             firebaseDatabaseServices.addTripToHistory(currentTrip.getTrip_id());
             firebaseDatabaseServices.changeTripStatus(currentTrip.getTrip_id(),TripStatus.Done);
 
+
             Uri gmIntentUri = Uri.parse("google.navigation:q=" + currentTrip.getEndloc());
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");

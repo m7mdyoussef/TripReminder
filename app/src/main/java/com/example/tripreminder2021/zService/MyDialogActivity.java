@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -21,6 +22,10 @@ import com.example.tripreminder2021.R;
 import com.example.tripreminder2021.pojo.TripModel;
 import com.example.tripreminder2021.pojo.TripStatus;
 import com.example.tripreminder2021.repository.FirebaseDatabaseServices;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.io.Serializable;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -34,6 +39,7 @@ import static com.example.tripreminder2021.zService.AlarmEventReciever.RECEIVED_
 
 public class MyDialogActivity extends Activity {
 
+    private static final String TAG = "TAG";
     DialognotificationService mService;
     AlertDialog alertDialog;
     android.app.AlertDialog alert;
@@ -56,8 +62,8 @@ public class MyDialogActivity extends Activity {
 
         Intent i = getIntent();
         Bundle b = i.getBundleExtra(RECEIVED_TRIP);
-        TripModel tm = (TripModel) b.getSerializable(RECEIVED_TRIP_SEND_SERIAL);
-        if (tm != null) {
+        if (b != null) {
+            TripModel tm = (TripModel) b.getParcelable(RECEIVED_TRIP_SEND_SERIAL);
             startAlarmRingTone(r);
             AlertDialog.Builder Builder = new AlertDialog.Builder(this)
                     .setMessage("Your Trip: \" " + tm.getTripname() + "\" is now on...")
@@ -112,6 +118,9 @@ public class MyDialogActivity extends Activity {
 
     public void startDialogService(TripModel tm) {
         Intent service = new Intent(this, DialognotificationService.class);
+
+   
+        EventBus.getDefault().postSticky(tm);
 
         service.putExtra(RECEIVED_TRIP_SEND_SERIAL, (Serializable) tm);
         service.putExtra("test", "MEMO");

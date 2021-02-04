@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Trip Reminder</string>
+
+
+    <string name="facebook_app_id">3024190001138320</string>
+    <string name="fb_login_protocol_scheme">fb3024190001138320</string>
+
+    <string name="next">التالي</string>
+    <string name="skip">تخطي</string>
+    <string name="start">فهمت</string>
+
+    <string name="slide_1_title">Title </string>
+    <string name="slide_1_desc"> Desc !</string>
+
+    <string name="slide_2_title">Title</string>
+    <string name="slide_2_desc">Desc !</string>
+
+    <string name="slide_3_title">Title </string>
+    <string name="slide_3_desc">Desc !</string>
+
+    <string name="addNote">أضف ملاحظة</string>
+    <string name="add_trip">أضف رحلة</string>
+    <string name="cancel">الغاء</string>
+    <string name="add_a_note">أضف ملاحظة</string>
+    <string name="date">التاريخ</string>
+    <string name="time">الوقت</string>
+    <string name="start_point">من</string>
+    <string name="destination">الي</string>
+    <string name="trip_name">اسم الرحلة</string>
+    <string name="enter_email_hint">أدخل ايميلك</string>
+    <string name="enter_password_hint">أدخل الرقم السري</string>
+    <string name="forget_password">نسيت رقمك السري؟</string>
+    <string name="remember_me">تذكرني</string>
+    <string name="login_button">دخول</string>
+    <string name="create_account">انشاء حساب جديد</string>
+    <string name="enter_name_hint">أدخل اسم المستخدم</string>
+    <string name="register_button">تسجيل دخول</string>
+    <string name="already_have_account">دخول</string>
+    <string name="submit">تأكيد</string>
+    <string name="restPasswordTitle">أعد كتابة كلمة المرور</string>
+    <string name="enter_valid_email">أدخل ايميل صحيح</string>
+    <string name="rest_link_sent_to_you"> تم ارسال ايميل لحسابك. من فضك تفقد حسابك</string>
+    <string name="enter_your_email">أدخل ايميلك</string>
+    <string name="twitter_api_key">oZyaoZ0uEex0356DN7JqUMtCP</string>
+    <string name="twitter_api_secret">8oafUZmZmXs45bkI4s6OWMAylVYJrSdauAgEIWUtm9dsT0YzEr</string>
+    <string name="login_with_twitter">تسجيل دخول بحساب تويتر</string>
+
+    <string name="to">الي</string>
+    <string name="from">من</string>
+    <string name="home_second">التاريخ</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="home">رحلاتي</string>
+    <string name="menu_home">التاريخ</string>
+    <string name="menu_gallery">تحديث</string>
+    <string name="logout">تسجيل خروج</string>
+    <string name="delete_trip">احذف الرحلة</string>
+    <string name="cancel_trip">العاء الرحلة</string>
+    <string name="menu_slideshow">تسجيل خروج</string>
+    <string name="language">اللغة</string>
+
+
+    <string-array name="times_array">
+        <item>عدم تكرار التنبيه</item>
+        <item>يوميا</item>
+        <item>أسبوعيا</item>
+        <item>شهريا</item>
+    </string-array>
+
+    <string-array name="trip_direction_array">
+        <item>رحلة واحدة فقط</item>
+        <item>رحلة ذهاب و عودة</item>
+    </string-array>
+
+
+</resources>

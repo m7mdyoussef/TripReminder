@@ -58,7 +58,7 @@ public class TripModel implements Parcelable,Serializable{
         this.trip_id = trip_id;
     }
 
-    //@TODO add lat Long
+
 
     public String  getDateTime() {
         return dateTime;
@@ -76,7 +76,8 @@ public class TripModel implements Parcelable,Serializable{
         this.notes = notes;
     }
 
-    public TripModel(String trip_id,String startloc, String endloc, String date, String time, String tripname, String status,
+    public TripModel(String trip_id,String startloc, String endloc, String date,
+                     String time, String tripname, String status,
                      List<String> notes, String dateTime,String include_in) {
 
         this.trip_id=trip_id;

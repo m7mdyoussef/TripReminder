@@ -21,7 +21,7 @@ public class AlarmEventReciever extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         this.context = context;
         Bundle b = intent.getBundleExtra(AddBtnActivity.NEW_TRIP_OBJECT);
-        TripModel tm = (TripModel) b.getSerializable(AddBtnActivity.NEW_TRIP_OBJ_SERIAL);
+        TripModel tm = (TripModel) b.getParcelable(AddBtnActivity.NEW_TRIP_OBJ_SERIAL);
 
         if (tm != null) {
             displayAlert(tm);
@@ -35,7 +35,7 @@ public class AlarmEventReciever extends BroadcastReceiver {
         //joe
         Intent i = new Intent(context, MyDialogActivity.class);
         Bundle b = new Bundle();
-        b.putSerializable(RECEIVED_TRIP_SEND_SERIAL, tm);
+        b.putParcelable(RECEIVED_TRIP_SEND_SERIAL, tm);
 
         i.putExtra(RECEIVED_TRIP, b);
         i.setClass(context, MyDialogActivity.class);
