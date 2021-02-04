@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
@@ -36,6 +37,7 @@ public class HistoryFragment extends Fragment {
     private HistoryRecyclerViewAdapter recyclerViewAdapter;
     private HistoryViewModel historyViewModel;
     private ArrayList<TripModel> myList=new ArrayList<>();
+    private ProgressBar progressBar;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         historyViewModel= ViewModelProviders.of(this).get(HistoryViewModel.class);
@@ -44,8 +46,10 @@ public class HistoryFragment extends Fragment {
 
         recyclerView = root.findViewById(R.id.recycler);
         btn_draw_maps = root.findViewById(R.id.draw_map);
+        progressBar=root.findViewById(R.id.history_progress);
+        progressBar.setVisibility(View.VISIBLE);
 
-        btn_draw_maps.setOnClickListener(h->openMaps());
+        btn_draw_maps.setOnClickListener(h->openMaps(recyclerViewAdapter.getData()));
 
 
         historyViewModel.init();
@@ -57,12 +61,11 @@ public class HistoryFragment extends Fragment {
         historyViewModel.getHistoryTrips().observe(getViewLifecycleOwner(), list -> {
             recyclerViewAdapter.setData(list);
         });
+        progressBar.setVisibility(View.GONE);
         return root;
     }
 
-    private void openMaps() {
-        ArrayList<TripModel> tripModels=new ArrayList<>();
-        tripModels=recyclerViewAdapter.getData();
+    private void openMaps(ArrayList<TripModel> tripModels) {
         Intent intent=new Intent(getContext(),MapsActivity.class);
         Bundle args = new Bundle();
         args.putSerializable("LIST",(Serializable) tripModels);

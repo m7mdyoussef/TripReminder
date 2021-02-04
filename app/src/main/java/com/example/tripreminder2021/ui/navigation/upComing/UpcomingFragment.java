@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.tripreminder2021.*;
@@ -31,6 +32,7 @@ public class UpcomingFragment extends Fragment {
     private UpcomingRecyclerViewAdapter recyclerViewAdapter;
     private UpcomingViewModel upcomingViewModel;
     private ArrayList<TripModel> myList=new ArrayList<>();
+    private ProgressBar progressBar;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +42,8 @@ public class UpcomingFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         recyclerView = root.findViewById(R.id.recycler);
+        progressBar=root.findViewById(R.id.upcoming_progress);
+        progressBar.setVisibility(View.VISIBLE);
         upcomingViewModel.init();
 
         recyclerViewAdapter = new UpcomingRecyclerViewAdapter(myList,getContext());
@@ -53,6 +57,7 @@ public class UpcomingFragment extends Fragment {
                 recyclerViewAdapter.setData(list);
             }
         });
+        progressBar.setVisibility(View.GONE);
         return root;
     }
 }
