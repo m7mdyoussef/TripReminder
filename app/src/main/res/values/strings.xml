@@ -60,6 +60,7 @@
     <string name="delete_trip">delete trip</string>
     <string name="cancel_trip">cancel trip</string>
     <string name="menu_slideshow">Logout</string>
+    <string name="language">language</string>
     <string name="Reports">Your Reports</string>
     <string name="draw_on_map">Show Me On Maps</string>
 
