@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".ui.navigation.history.HistoryFragment">
 
+
+    <ProgressBar
+        android:id="@+id/history_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/recycler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recycler" />
+
     <Button
         android:id="@+id/draw_map"
         android:layout_width="wrap_content"

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class HistoryViewModel extends ViewModel {
 
     private MutableLiveData<ArrayList<TripModel>> tripList;
-    private MutableLiveData<ArrayList<TripModel>> tripReportedList;
 
     public void init()
     {
@@ -27,8 +26,5 @@ public class HistoryViewModel extends ViewModel {
         tripList=HistoryRepository.getInstance().getHistoryTrips();
         return tripList;
     }
-    public MutableLiveData<ArrayList<TripModel>> getReportedList(String from,String to) {
-        tripReportedList=HistoryRepository.getInstance().getTripsReport(from, to);
-        return tripReportedList;
-    }
+
 }
