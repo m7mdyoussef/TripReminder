@@ -34,6 +34,8 @@ public class AlarmEventReciever extends BroadcastReceiver {
 
         //joe
         Intent i = new Intent(context, MyDialogActivity.class);
+        i.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+
         Bundle b = new Bundle();
         b.putParcelable(RECEIVED_TRIP_SEND_SERIAL, tm);
 

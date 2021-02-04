@@ -63,6 +63,7 @@
     <string name="language">language</string>
     <string name="Reports">Show Reports</string>
     <string name="draw_on_map">Show Me On Maps</string>
+    <string name="changeLanguage">Change language</string>
 
 
     <string-array name="times_array">
@@ -77,12 +78,16 @@
         <item>Round Trip</item>
     </string-array>
     <string name="title_activity_maps">Map</string>
+
+    <string name="your_notes">your Notes    >> click on borders to collapse</string>
+
     <string name="total_trips">Total Trips</string>
     <string name="total_done_trips">Total Done Trips</string>
     <string name="total_canceled_trips">Total Canceled Trips</string>
     <string name="total_distance_trips">Total Distance</string>
     <string name="average_time">Average Time</string>
     <string name="total_average_speed">Average Speed</string>
+
 
 
 </resources>

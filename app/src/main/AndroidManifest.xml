@@ -40,7 +40,7 @@
 
         <activity
             android:name=".ui.activities.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -102,6 +102,11 @@
 
         <service
             android:name=".zService.DialognotificationService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name=".zService.FloatingWindowService"
             android:enabled="true"
             android:exported="false" />
 

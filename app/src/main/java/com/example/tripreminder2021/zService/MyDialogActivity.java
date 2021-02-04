@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Window;
@@ -43,9 +44,10 @@ public class MyDialogActivity extends Activity {
     DialognotificationService mService;
     AlertDialog alertDialog;
     android.app.AlertDialog alert;
+    boolean started = false;
 
     private FirebaseDatabaseServices firebaseDatabaseServices;
-
+    private static final int SYSTEM_ALERT_WINDOW_PERMISSION = 2084;
 
 
     @Override
@@ -53,6 +55,11 @@ public class MyDialogActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_my_dialog);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            askPermission();
+        }
+
 
         firebaseDatabaseServices=new FirebaseDatabaseServices();
 
@@ -62,9 +69,10 @@ public class MyDialogActivity extends Activity {
 
         Intent i = getIntent();
         Bundle b = i.getBundleExtra(RECEIVED_TRIP);
-        if (b != null) {
             TripModel tm = (TripModel) b.getParcelable(RECEIVED_TRIP_SEND_SERIAL);
+        if (tm != null) {
             startAlarmRingTone(r);
+
             AlertDialog.Builder Builder = new AlertDialog.Builder(this)
                     .setMessage("Your Trip: \" " + tm.getTripname() + "\" is now on...")
                     .setTitle("Trip Reminder")
@@ -88,7 +96,19 @@ public class MyDialogActivity extends Activity {
                         mapIntent.setPackage("com.google.android.apps.maps");
                         stopAlarmRingTone(r);
                         startActivity(mapIntent);
-
+                        EventBus.getDefault().postSticky(tm);
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                            Intent intent =new Intent(MyDialogActivity.this, FloatingWindowService.class);
+                            startService(intent);
+                            finish();
+                        } else if (Settings.canDrawOverlays(this)) {
+                            Intent intent =new Intent(MyDialogActivity.this, FloatingWindowService.class);
+                            startService(intent);
+                            finish();
+                        } else {
+                            askPermission();
+                            Toast.makeText(this, "You need System Alert Window Permission to do this", Toast.LENGTH_SHORT).show();
+                        }
 
                         finish();
                     })
@@ -105,7 +125,12 @@ public class MyDialogActivity extends Activity {
                             alertDialog.dismiss();
                             finish();
                         }
+                    })
+                    .setCancelable(false).setOnDismissListener(dialog -> {
+                        stopAlarmRingTone(r);
+
                     });
+
 
             alertDialog = Builder.create();
             alertDialog.show();
@@ -114,6 +139,16 @@ public class MyDialogActivity extends Activity {
             Toast.makeText(this, "Something went wrong !", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+// floating widget permission
+    private void askPermission() {
+        Intent intent = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+        }
+        startActivityForResult(intent, SYSTEM_ALERT_WINDOW_PERMISSION);
     }
 
     public void startDialogService(TripModel tm) {
@@ -199,5 +234,8 @@ public class MyDialogActivity extends Activity {
         alert = alertBuilder.create();
         alert.show();
     }
+
+
+
 
 }

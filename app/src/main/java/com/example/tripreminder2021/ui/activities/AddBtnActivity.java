@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -50,7 +51,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
@@ -196,6 +199,7 @@ public class AddBtnActivity extends AppCompatActivity
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @OnClick({R.id.add_trip_btn, R.id.add_note_btn, R.id.dateTextField,
             R.id.timeTextField, R.id.cancel_btn, R.id.clockEdit_back, R.id.dateEdit_back})
     public void onViewClicked(View view) {
@@ -507,34 +511,32 @@ public class AddBtnActivity extends AppCompatActivity
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void startAlarm(TripModel tripModel) {
 
+        Random random = new Random();
+        int i = random.nextInt((1000 - 1) + 1) + 1;
         alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-//        Log.i("time", mCalendar.getTime().toString());
-//        long alarmTime = mCalendar.getTimeInMillis();
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-        try {
-            cal.setTime(sdf.parse(tripModel.getDateTime()));// all done
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Intent intent = new Intent(this, AlarmEventReciever.class);
 
+        Intent intent = new Intent(this, AlarmEventReciever.class);
         Bundle b = new Bundle();
         b.putParcelable(AddBtnActivity.NEW_TRIP_OBJ_SERIAL, tripModel);
         intent.putExtra(NEW_TRIP_OBJECT, b);
 
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
+        else
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
+
     }
 
 
     private void startAlarmBack(TripModel tripModel) {
         AlarmManager alarmManager2 = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-//        Log.i("time", mCalendar.getTime().toString());
-//        long alarmTime = mCalendar.getTimeInMillis();
+
         Calendar cal2 = Calendar.getInstance();
         SimpleDateFormat sdf2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
         try {

@@ -59,6 +59,12 @@
     <string name="cancel_trip">العاء الرحلة</string>
     <string name="menu_slideshow">تسجيل خروج</string>
     <string name="language">اللغة</string>
+    <string name="Reports">تقاريرك</string>
+    <string name="draw_on_map">أعرض علي الخريطة</string>
+    <string name="changeLanguage">تغيير اللغة</string>
+    <string name="your_notes">ملاحظاتك   >> اضغط علي احرف البيان للتقليص</string>
+    <string name="title_activity_maps">Map</string>
+
 
 
     <string-array name="times_array">

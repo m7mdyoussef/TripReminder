@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +26,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -43,14 +50,22 @@ public class UpcomingTripsActivity extends AppCompatActivity {
 
     FloatingActionButton fab;
     private SharedPreferencesManager sharedPreferencesManager;
+    AlertDialog dialog;
 
-
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadLocale();
         setContentView(R.layout.activity_upcoming_trips);
+        if (!Settings.canDrawOverlays(this)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent, 80);
+        }
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         sharedPreferencesManager=new SharedPreferencesManager(this);
 
@@ -89,6 +104,27 @@ public class UpcomingTripsActivity extends AppCompatActivity {
 
                 if (menuItem.getItemId() == R.id.nav_language) {
 
+                    final String[]  list ={"English","Arabic"};
+                    AlertDialog.Builder builder=new AlertDialog.Builder(UpcomingTripsActivity.this);
+                    dialog = builder.setTitle(getString(R.string.changeLanguage))
+                            .setSingleChoiceItems(list, -1, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int i) {
+                                    if (i==0){
+                                        //english
+                                        setLocale("en");
+                                        recreate();
+                                    }
+                                    else if (i==1){
+                                        //arabic
+                                        setLocale("ar");
+                                        recreate();
+                                    }
+                                }
+                            })
+                            .setCancelable(true)
+                            .create();
+                    dialog.show();
 
 
 
@@ -157,27 +193,27 @@ public class UpcomingTripsActivity extends AppCompatActivity {
 
     }
 
-//    private void setLocale(String langu) {
-//
-//        Locale locale  = new Locale(langu);
-//        locale.setDefault(locale);
-//        Configuration config = new Configuration();
-//        config.locale = locale;
-//        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-//
-//        //save data to shared preferences
-//        SharedPreferences.Editor editor =getSharedPreferences("settings", MODE_PRIVATE).edit();
-//        editor.putString("my langu", langu);
-//        editor.apply();
-//    }
-//
-//    //load language saved in shared preferences
-//    public void loadLocale(){
-//        SharedPreferences prefs = getSharedPreferences("settings", MODE_PRIVATE);
-//        String my_lang = prefs.getString("my langu", "en");
-//        setLocale(my_lang);
-//      //  Settings.LANG=my_lang;
-//    }
+    private void setLocale(String langu) {
+
+        Locale locale  = new Locale(langu);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
+        //save data to shared preferences
+        SharedPreferences.Editor editor =getSharedPreferences("settings", MODE_PRIVATE).edit();
+        editor.putString("my langu", langu);
+        editor.apply();
+    }
+
+    //load language saved in shared preferences
+    public void loadLocale(){
+        SharedPreferences prefs = getSharedPreferences("settings", MODE_PRIVATE);
+        String my_lang = prefs.getString("my langu", "en");
+        setLocale(my_lang);
+        LocalHelper.LANGUAGE=my_lang;
+    }
 
 
     @Override
