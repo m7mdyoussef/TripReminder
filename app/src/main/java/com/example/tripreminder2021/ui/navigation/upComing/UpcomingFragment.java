@@ -1,5 +1,6 @@
 package com.example.tripreminder2021.ui.navigation.upComing;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.example.tripreminder2021.repository.FirebaseDatabaseServices;
 import com.example.tripreminder2021.viewModels.UpcomingViewModel;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -45,6 +47,8 @@ public class UpcomingFragment extends Fragment {
         progressBar=root.findViewById(R.id.upcoming_progress);
         progressBar.setVisibility(View.VISIBLE);
         upcomingViewModel.init();
+
+
 
         recyclerViewAdapter = new UpcomingRecyclerViewAdapter(myList,getContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(root.getContext());

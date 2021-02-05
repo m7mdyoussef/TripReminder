@@ -252,28 +252,30 @@ public class AddBtnActivity extends AppCompatActivity
                             TripModel newTrip = new TripModel("1",selectedStartPlace, selectedEndPlace,
                                     dateTextField.getText().toString(),
                                     timeTextField.getText().toString(),
-                                    tripNameTextField.getEditText().getText().toString()
+                                    tripNameTextField.getEditText().getText().toString()+ " Going"
                                     , "start", notesList, mCalendar.getTime().toString(),
                                     Constants.SEARCH_CHILD_UPCOMING_KEY);
 
-                            firebaseDatabaseServices.addTrip(newTrip);
 
-
-                            Intent resultIntent = new Intent();
-                            resultIntent.putExtra("NEWTRIP", (Serializable) newTrip);
-                            startAlarm(newTrip);
-                            setResult(Activity.RESULT_OK, resultIntent);
+                                firebaseDatabaseServices.addTrip(newTrip);
 
 
 
-                            TripModel TripBack = new TripModel("1",selectedStartPlace, selectedEndPlace,
-                                    dateTextField.getText().toString(),
-                                    timeTextField.getText().toString(),
+                                Intent resultIntent = new Intent();
+                                resultIntent.putExtra("NEWTRIP", (Serializable) newTrip);
+                                startAlarm(newTrip);
+                                setResult(Activity.RESULT_OK, resultIntent);
+
+
+
+                            TripModel TripBack = new TripModel("2",selectedEndPlace, selectedStartPlace,
+                                    dateEdit_back.getText().toString(),
+                                    clockEdit_back.getText().toString(),
                                     tripNameTextField.getEditText().getText().toString()+ " Back"
-                                    , "start", notesList, mCalendar.getTime().toString(),
+                                    , "start", notesList, myCalendarRound.getTime().toString(),
                                     Constants.SEARCH_CHILD_UPCOMING_KEY);
 
-                            firebaseDatabaseServices.addTrip(newTrip);
+                            firebaseDatabaseServices.addTrip(TripBack);
 
                             Intent resultIntentback = new Intent();
                             resultIntentback.putExtra("TripBack", (Serializable) TripBack);
@@ -320,9 +322,10 @@ public class AddBtnActivity extends AppCompatActivity
                         myCalendarRound.set(Calendar.MONTH, monthOfYear);
                         myCalendarRound.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                        String myFormat = DateFormat.getDateInstance(DateFormat.FULL).format(myCalendarRound.getTime());
+                       // String myFormat = DateFormat.getDateInstance(DateFormat.FULL).format(myCalendarRound.getTime());
                         ; //In which you need put here
-                        dateEdit_back.setText(myFormat);
+                        dateEdit_back.setText(dayOfMonth+"-"+(monthOfYear + 1)+"-"+ year);
+
                     }
                 };
                 new DatePickerDialog(AddBtnActivity.this, date1, currentCalendar
@@ -511,7 +514,6 @@ public class AddBtnActivity extends AppCompatActivity
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void startAlarm(TripModel tripModel) {
 
         Random random = new Random();
@@ -524,36 +526,48 @@ public class AddBtnActivity extends AppCompatActivity
         intent.putExtra(NEW_TRIP_OBJECT, b);
 
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, i , intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
+        alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
         else
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
 
     }
 
 
+
     private void startAlarmBack(TripModel tripModel) {
-        AlarmManager alarmManager2 = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        Random random2 = new Random();
+        int j = random2.nextInt((1000 - 1) + 1) + 1;
 
-        Calendar cal2 = Calendar.getInstance();
-        SimpleDateFormat sdf2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-        try {
-            cal2.setTime(sdf2.parse( mCalendar.getTime().toString()));// all done
-        } catch (ParseException e) {
-            e.printStackTrace();
+       AlarmManager alarmManager2 = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+//        Calendar cal = Calendar.getInstance();
+//        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+//        try {
+//            cal.setTime(sdf.parse(tripModel.dateTime));// all done
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+        Intent intent = new Intent(this, AlarmEventReciever.class);
+        Bundle b = new Bundle();
+        b.putParcelable(AddBtnActivity.NEW_TRIP_OBJ_SERIAL, tripModel);
+        intent.putExtra(NEW_TRIP_OBJECT, b);
+
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, j , intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        if (alarmManager2 != null) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+
+            alarmManager2.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, myCalendarRound.getTimeInMillis(), pendingIntent);
+
+        else
+            alarmManager2.set(AlarmManager.RTC_WAKEUP, myCalendarRound.getTimeInMillis(), pendingIntent);
+
         }
-        Intent intent2 = new Intent(this, AlarmEventReciever.class);
-        intent2.putExtra(NEW_TRIP_OBJECT, (Serializable) tripModel);
 
-        Bundle b2 = new Bundle();
-        b2.putSerializable(AddBtnActivity.NEW_TRIP_OBJ_SERIAL, tripModel);
-        intent2.putExtra(NEW_TRIP_OBJECT, b2);
-
-
-        PendingIntent pendingIntent2 = PendingIntent.getBroadcast(this, 0, intent2, 0);
-        alarmManager2.set(AlarmManager.RTC_WAKEUP, cal2.getTimeInMillis(), pendingIntent2);
     }
 
 
