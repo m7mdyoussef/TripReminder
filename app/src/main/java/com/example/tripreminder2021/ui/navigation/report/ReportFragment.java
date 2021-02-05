@@ -10,12 +10,15 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripreminder2021.*;
+import com.example.tripreminder2021.config.DistanceCalculator;
 import com.example.tripreminder2021.dataValidation.DataValidator;
+import com.example.tripreminder2021.pojo.Distance;
 import com.example.tripreminder2021.pojo.TripModel;
 import com.example.tripreminder2021.pojo.TripStatus;
 import com.example.tripreminder2021.ui.fragment.DatePickerFragment;
@@ -46,7 +49,8 @@ public class ReportFragment extends Fragment {
 
     private ImageView start_date_picker ;
     private ImageView end_date_picker ;
-   private Button show_report;
+    private Button show_report;
+    private ProgressBar progressBar;
 
     private RelativeLayout relativeLayoutReport;
 
@@ -58,7 +62,6 @@ public class ReportFragment extends Fragment {
     private TextView average_distance;
     private TextView average_time;
     private TextView average_speed;
-
 
     ArrayList<TripModel> trips=new ArrayList<TripModel>();
 
@@ -91,17 +94,21 @@ public class ReportFragment extends Fragment {
                     speed=getAverageSpeed(list);
                     arr=getDoneCancelSize(list);
 
+                    relativeLayoutReport.setVisibility(View.VISIBLE);
                     total_trips.setText(list.size()+" ");
                     total_done_trips.setText(arr[0]+" ");
                     total_canceled_trips.setText(arr[1]+" ");
 
-                    average_distance.setText(distance+"");
+                    average_distance.setText((int)distance+"");
                     average_speed.setText(speed+"");
-                    average_time.setText(time+"");                                            
+                    average_time.setText(time+"");
+                    progressBar.setVisibility(View.GONE);
                 });
         return root;
     }
     private void action_showReport() {
+        progressBar.setVisibility(View.VISIBLE);
+        relativeLayoutReport.setVisibility(View.GONE);
         Log.i("TAG", "click: ");
         String start="".concat(from.getText().toString());
         String To ="".concat(to.getText().toString());
@@ -109,7 +116,6 @@ public class ReportFragment extends Fragment {
             Toast.makeText(getContext(), "Enter The Duration First", Toast.LENGTH_SHORT).show();
         else {
             trips = reportViewModel.getReportedList(start, To).getValue();
-            relativeLayoutReport.setVisibility(View.VISIBLE);
             txt_date_range1.setText(start);
             txt_date_range2.setText(To);
         }
@@ -121,7 +127,9 @@ public class ReportFragment extends Fragment {
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
         // date picker dialog
-        datePickerDialog = new DatePickerDialog(getContext(), (view, year1, monthOfYear, dayOfMonth) -> to.setText(dayOfMonth+"-"+(monthOfYear + 1)+"-"+ year1), year, month, day);
+        datePickerDialog = new DatePickerDialog(getContext(), (view, year1, monthOfYear, dayOfMonth) ->
+                to.setText(dayOfMonth+"-"+(monthOfYear + 1)+"-"+ year1)
+                , year, month, day);
         datePickerDialog.show();
     }
 
@@ -145,6 +153,8 @@ public class ReportFragment extends Fragment {
         relativeLayoutReport=root.findViewById(R.id.relative_report);
         relativeLayoutReport.setVisibility(View.GONE);
 
+        progressBar=root.findViewById(R.id.report_progress);
+
         txt_date_range1=root.findViewById(R.id.txt_date_range1);
         txt_date_range2=root.findViewById(R.id.txt_date_range2);
         total_trips=root.findViewById(R.id.txt_total_trips);
@@ -153,10 +163,6 @@ public class ReportFragment extends Fragment {
         average_distance=root.findViewById(R.id.txt_total_distance);
         average_speed=root.findViewById(R.id.txt_average_speed);
         average_time=root.findViewById(R.id.txt_average_time);
-
-
-
-
     }
 
     private int[] getDoneCancelSize(ArrayList<TripModel> list) {
@@ -177,8 +183,8 @@ public class ReportFragment extends Fragment {
     }
 
     private double getAverageDistance(ArrayList<TripModel>list){
-
-        return 55.2;
+         DistanceCalculator.getInstance(getContext());
+         return DistanceCalculator.getTotalDistance(list)/1000;
     }
     private double getAverageSpeed(ArrayList<TripModel> list){
 
