@@ -40,9 +40,8 @@ import java.util.ArrayList;
 public class UpcomingRecyclerViewAdapter extends RecyclerView.Adapter<UpcomingRecyclerViewAdapter.ViewHolder>{
 
     private static final int SYSTEM_ALERT_WINDOW_PERMISSION = 2084;
-    private ArrayList<TripModel> list;
 
-    //private TripModel currentTrip;
+    private ArrayList<TripModel> list;
     private Context context;
     FirebaseDatabaseServices firebaseDatabaseServices;
 
@@ -66,7 +65,7 @@ public class UpcomingRecyclerViewAdapter extends RecyclerView.Adapter<UpcomingRe
         holder.startLoc.setText(currentTrip.getStartloc());
         holder.endLoc.setText(currentTrip.getEndloc());
         holder.time.setText(currentTrip.getTime());
-        holder.date.setText(currentTrip.getDate());
+        holder.date.setText(String.valueOf(currentTrip.getDate()));
         holder.startNow.setOnClickListener(v -> {
 
             firebaseDatabaseServices.addTripToHistory(currentTrip.getTrip_id());

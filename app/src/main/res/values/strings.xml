@@ -87,7 +87,7 @@
     <string name="total_distance_trips">Total Distance</string>
     <string name="average_time">Average Time</string>
     <string name="total_average_speed">Average Speed</string>
-
+    <string name="this_report_does_not_include_deleted_trips">This Report Does not include Deleted Trips</string>
 
 
 </resources>
