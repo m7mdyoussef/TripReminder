@@ -15,11 +15,6 @@ public class ConnectionAvailability extends LiveData<Boolean> {
 
     private Context context;
 
-    private final String TAG = "C-Manager";
-    private ConnectivityManager.NetworkCallback networkCallback;
-    private ConnectivityManager cm =(ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-    private Set<Network> validNetworks= new HashSet<>();
-
     public ConnectionAvailability(Context context)
     {
         this.context = context;
@@ -35,23 +30,5 @@ public class ConnectionAvailability extends LiveData<Boolean> {
         }
         return false;
     }
-
-
-    private void checkValidNetworks()
-    {
-        postValue((validNetworks.size()>0));
-    }
-
-    @Override
-    protected void onInactive() {
-        super.onInactive();
-    }
-
-    @Override
-    protected void onActive() {
-        //networkCallback = createNetworkCallback();
-
-    }
-
 
 }
