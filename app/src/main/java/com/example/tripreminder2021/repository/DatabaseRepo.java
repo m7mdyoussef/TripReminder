@@ -16,7 +16,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DatabaseRepo {
@@ -79,7 +82,6 @@ public class DatabaseRepo {
         trip.setTrip_id(reference.child(Constants.TRIP_CHILD_NAME)
                 .child(Constants.CURRENT_USER_ID)
                 .push().getKey());
-
         reference.child(Constants.TRIP_CHILD_NAME)
                 .child(Constants.CURRENT_USER_ID)
                 .child(trip.getTrip_id())
@@ -95,6 +97,13 @@ public class DatabaseRepo {
     }
     public MutableLiveData<ArrayList<TripModel>> getTripsReport(String from,String to) {
         ArrayList<TripModel> allTripsReport=new ArrayList<>();
+
+       /* try {
+           Date date1=new SimpleDateFormat("dd-MM-yyyy").parse(from);
+           Date date2=new SimpleDateFormat("dd-MM-yyyy").parse(to);
+
+        */
+
 
         FirebaseDatabase database=FirebaseDatabase.getInstance();
         DatabaseReference reference=database.getReference();
