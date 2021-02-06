@@ -61,9 +61,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddBtnActivity extends AppCompatActivity
-        implements TimePickerDialog.OnTimeSetListener,
-        DatePickerDialog.OnDateSetListener {
+public class AddBtnActivity extends AppCompatActivity {
     public static final String NEW_TRIP_OBJECT = "NEW_TRIP_OBJECT";
     public static final String NEW_TRIP_OBJ_SERIAL = "NEW_TRIP_OBJECT";
     public int hours2 = 2;
@@ -149,6 +147,7 @@ public class AddBtnActivity extends AppCompatActivity
         mNotesTextInputLayout.add(noteTextField);
 
     }
+
 
     private void setUpAutoComplete() {
         AutocompleteSupportFragment placeStartPointAutoComplete;
@@ -297,14 +296,73 @@ public class AddBtnActivity extends AppCompatActivity
                 generateNoteLayout(view);
                 break;
             case R.id.dateTextField:
-                DialogFragment datepicker = new DatePickerFragment();
+                final DatePickerDialog.OnDateSetListener date2 = new DatePickerDialog.OnDateSetListener() {
 
-                datepicker.show(getSupportFragmentManager(), "date");
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                          int dayOfMonth) {
+                        // TODO Auto-generated method stub
+
+                        mCalendar.set(Calendar.YEAR, year);
+                        mCalendar.set(Calendar.MONTH, monthOfYear);
+                        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                        // String myFormat = DateFormat.getDateInstance(DateFormat.FULL).format(myCalendarRound.getTime());
+                        ; //In which you need put here
+                        dateTextField.setText(dayOfMonth+"-"+(monthOfYear + 1)+"-"+ year);
+
+                    }
+                };
+                new DatePickerDialog(AddBtnActivity.this, date2, mCalendar
+                        .get(Calendar.YEAR), mCalendar.get(Calendar.MONTH),
+                        mCalendar.get(Calendar.DAY_OF_MONTH)).show();
 
                 break;
             case R.id.timeTextField:
-                DialogFragment timepicker = new TimePickerFragment();
-                timepicker.show(getSupportFragmentManager(), "time");
+
+                Calendar mcurrentTime3 = Calendar.getInstance();
+                int hour = mcurrentTime3.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime3.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker3;
+                mTimePicker3 = new TimePickerDialog(AddBtnActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+
+                        hours2 = selectedHour;
+                        minutes2 = selectedMinute;
+                        String timeSet2 = "";
+                        if (hours2 > 12) {
+                            hours2 -= 12;
+                            timeSet2 = "PM";
+                        } else if (hours2 == 0) {
+                            hours2 += 12;
+                            timeSet2 = "AM";
+                        } else if (hours2 == 12) {
+                            timeSet2 = "PM";
+                        } else {
+                            timeSet2 = "AM";
+                        }
+
+                        String min2 = "";
+                        if (minutes2 < 10)
+                            min2 = "0" + minutes2;
+                        else
+                            min2 = String.valueOf(minutes2);
+
+                        // Append in a StringBuilder
+                        String aTime2 = new StringBuilder().append(hours2).append(':')
+                                .append(min2).append(" ").append(timeSet2).toString();
+                        timeTextField.setText(aTime2);
+                        myCalendarRound.set(Calendar.HOUR_OF_DAY, selectedHour);
+                        myCalendarRound.set(Calendar.MINUTE, selectedMinute - 1);
+                        myCalendarRound.set(Calendar.SECOND, 59);
+                    }
+                }, hour, minute, false);
+                mTimePicker3.setTitle("Select Time");
+                mTimePicker3.show();
+
+
                 break;
 
             case R.id.dateEdit_back:
@@ -328,17 +386,17 @@ public class AddBtnActivity extends AppCompatActivity
 
                     }
                 };
-                new DatePickerDialog(AddBtnActivity.this, date1, currentCalendar
-                        .get(Calendar.YEAR), currentCalendar.get(Calendar.MONTH),
-                        currentCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(AddBtnActivity.this, date1, myCalendarRound
+                        .get(Calendar.YEAR), myCalendarRound.get(Calendar.MONTH),
+                        myCalendarRound.get(Calendar.DAY_OF_MONTH)).show();
 
 
                 break;
             case R.id.clockEdit_back:
                 //////////////////////////////// round picker ///////////////////////////////////////
                 Calendar mcurrentTime2 = Calendar.getInstance();
-                int hour = mcurrentTime2.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime2.get(Calendar.MINUTE);
+                int hour2 = mcurrentTime2.get(Calendar.HOUR_OF_DAY);
+                int minute2 = mcurrentTime2.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker2;
                 mTimePicker2 = new TimePickerDialog(AddBtnActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @SuppressLint("SetTextI18n")
@@ -374,7 +432,7 @@ public class AddBtnActivity extends AppCompatActivity
                         myCalendarRound.set(Calendar.MINUTE, selectedMinute - 1);
                         myCalendarRound.set(Calendar.SECOND, 59);
                     }
-                }, hour, minute, false);
+                }, hour2, minute2, false);
                 mTimePicker2.setTitle("Select Time");
                 mTimePicker2.show();
 
@@ -387,60 +445,10 @@ public class AddBtnActivity extends AppCompatActivity
         }
     }
 
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.YEAR, i);
-        c.set(Calendar.MONTH, i1);
-        c.set(Calendar.DAY_OF_MONTH, i2);
-        String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
-        Log.i("Date Time Picker", currentDateString);
-        dateTextField.setText(i2+"-"+(i1 + 1)+"-"+ i);
-
-        mCalendar.set(Calendar.YEAR, i);
-        mCalendar.set(Calendar.MONTH, i1); // Month is zero-based
-        mCalendar.set(Calendar.DAY_OF_MONTH, i2);
 
 
-    }
 
 
-    @Override
-    public void onTimeSet(TimePicker timePicker, int i, int i1) {
-
-        hour = i;
-        minutes = i1;
-        String timeSet = "";
-        if (hour > 12) {
-            hour -= 12;
-            timeSet = "PM";
-        } else if (hour == 0) {
-            hour += 12;
-            timeSet = "AM";
-        } else if (hour == 12) {
-            timeSet = "PM";
-        } else {
-            timeSet = "AM";
-        }
-
-        String min = "";
-        if (minutes < 10)
-            min = "0" + minutes;
-        else
-            min = String.valueOf(minutes);
-
-        // Append in a StringBuilder
-        String aTime = new StringBuilder().append(hour).append(':')
-                .append(min).append(" ").append(timeSet).toString();
-        timeTextField.setText(aTime);
-
-
-        // Set calendat item
-        mCalendar = Calendar.getInstance();
-        mCalendar.set(Calendar.HOUR_OF_DAY, i);
-        mCalendar.set(Calendar.MINUTE, i1);
-        mCalendar.set(Calendar.SECOND, 0);
-
-    }
     private void spinnerInit() {
         //Trip Direction Spinner
         adapterTripDirectionSpin = ArrayAdapter.createFromResource(this,
@@ -534,9 +542,8 @@ public class AddBtnActivity extends AppCompatActivity
         else
         alarmManager.set(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
 
+        Toast.makeText(this, DateFormat.getDateTimeInstance().format(mCalendar.getTime()), Toast.LENGTH_LONG).show();
     }
-
-
 
     private void startAlarmBack(TripModel tripModel) {
         Random random2 = new Random();
@@ -556,8 +563,7 @@ public class AddBtnActivity extends AppCompatActivity
         intent.putExtra(NEW_TRIP_OBJECT, b);
 
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, j , intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, j , intent, PendingIntent.FLAG_UPDATE_CURRENT);
         if (alarmManager2 != null) {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
 
@@ -569,8 +575,6 @@ public class AddBtnActivity extends AppCompatActivity
         }
 
     }
-
-
 
 
 
