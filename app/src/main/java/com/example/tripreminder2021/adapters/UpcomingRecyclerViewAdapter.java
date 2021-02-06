@@ -3,7 +3,6 @@ package com.example.tripreminder2021.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,13 +16,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.tripreminder2021.R;
 import com.example.tripreminder2021.pojo.TripModel;
@@ -31,16 +32,17 @@ import com.example.tripreminder2021.pojo.TripStatus;
 import com.example.tripreminder2021.repository.FirebaseDatabaseServices;
 import com.example.tripreminder2021.ui.activities.AddBtnActivity;
 import com.example.tripreminder2021.zService.FloatingWindowService;
-import com.example.tripreminder2021.zService.MyDialogActivity;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.Serializable;
+import java.util.AbstractSequentialList;
 import java.util.ArrayList;
 
 public class UpcomingRecyclerViewAdapter extends RecyclerView.Adapter<UpcomingRecyclerViewAdapter.ViewHolder>{
 
-    private static final int SYSTEM_ALERT_WINDOW_PERMISSION = 2084;
-
+int increasedID=0;
     private ArrayList<TripModel> list;
     private Context context;
     FirebaseDatabaseServices firebaseDatabaseServices;
@@ -95,10 +97,6 @@ public class UpcomingRecyclerViewAdapter extends RecyclerView.Adapter<UpcomingRe
 
     }
 
-
-
-
-
     private void showPopupMenu(View view,TripModel currentTrip) {
         // inflate menu
         androidx.appcompat.widget.PopupMenu popup = new PopupMenu(view.getContext(),view);
@@ -110,11 +108,14 @@ public class UpcomingRecyclerViewAdapter extends RecyclerView.Adapter<UpcomingRe
                 switch (item.getItemId()) {
                     case R.id.action_upcoming_show_notes:
                         //currentTrip.getNotes();
+
                         return true;
 
                     case R.id.action_upcoming_add_notes:
 
-                        firebaseDatabaseServices.updateNotes(currentTrip.getTrip_id(),currentTrip.getNotes());
+
+                        addNoteScenario(currentTrip);
+                       // firebaseDatabaseServices.updateNotes(currentTrip.getTrip_id(),currentTrip.getNotes());
                         return true;
 
                     case R.id.action_upcoming_edit_trip:
@@ -139,6 +140,62 @@ public class UpcomingRecyclerViewAdapter extends RecyclerView.Adapter<UpcomingRe
         });
         popup.show();
     }
+
+    private void addNoteScenario(TripModel currentTrip) {
+
+        AlertDialog alert;
+
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        final View inflate_view = inflater.inflate(R.layout.add_notes_sayout_sample1, null);
+
+       ArrayList<TextInputLayout> mNotesTextInputLayout = new ArrayList<>();
+        final LinearLayout currentParent =inflate_view.findViewById(R.id.notes_linearLayout1);
+
+        final View linearLayout = inflater.inflate(R.layout.add_notes_sayout_sample, null);
+
+        final TextInputLayout noteTextInput = linearLayout.findViewById(R.id.note_text_field_input1);
+        mNotesTextInputLayout.add(noteTextInput);
+
+        ImageButton subImgBtn = linearLayout.findViewById(R.id.sub_note_img_btn);
+        ImageButton subImgBtn1 = inflate_view.findViewById(R.id.sub_note_img_btn1);
+
+        subImgBtn.setOnClickListener(v -> {
+            currentParent.removeView(linearLayout);
+            mNotesTextInputLayout.remove(noteTextInput);
+        });
+
+        subImgBtn1.setOnClickListener(v -> {
+            inflater.inflate(R.layout.add_notes_sayout_sample, null);
+
+        });
+
+
+
+
+
+
+
+        currentParent.addView(linearLayout);
+        increasedID++;
+
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(inflate_view);
+        builder.setCancelable(false);
+
+        builder.setPositiveButton((R.string.cancel), (dialog, id) -> saveNotes(currentTrip));
+        alert = builder.create();
+        alert.show();
+
+    }
+
+    private void saveNotes(TripModel trip)
+    {
+        Log.i("TAG", "saveNotes: "+trip.getNotes().size());
+    }
+
+
     @Override
     public int getItemCount() {
         return list.size();
@@ -170,8 +227,9 @@ public class UpcomingRecyclerViewAdapter extends RecyclerView.Adapter<UpcomingRe
     {
         Intent intent = new Intent(context, AddBtnActivity.class);
         Bundle Bundle = new Bundle();
-        Bundle.putParcelable("LAST_VALUES", tripModel);
-        intent.putExtras(Bundle);
+        Bundle.putSerializable("TRIP",(Serializable) tripModel);
+        intent.putExtra("EDIT_BUNDLE",Bundle);
+        context.startActivity(intent);
     }
 
     private void showDeleteAlertDialog(String trip_id)
@@ -194,5 +252,11 @@ public class UpcomingRecyclerViewAdapter extends RecyclerView.Adapter<UpcomingRe
         this.list=list;
         notifyDataSetChanged();
     }
+
+    private void generateNoteLayout(View view) {
+
+
+    }
+
 
 }

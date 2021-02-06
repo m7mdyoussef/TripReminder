@@ -3,6 +3,9 @@ package com.example.tripreminder2021.pojo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +48,7 @@ public class TripModel implements Parcelable,Serializable{
     }
 
     public String startloc,endloc,date,time,status,tripname,dateTime;
+
 
     private String trip_id;
     private String include_in;

@@ -82,10 +82,12 @@ public class DatabaseRepo {
         trip.setTrip_id(reference.child(Constants.TRIP_CHILD_NAME)
                 .child(Constants.CURRENT_USER_ID)
                 .push().getKey());
+
         reference.child(Constants.TRIP_CHILD_NAME)
                 .child(Constants.CURRENT_USER_ID)
                 .child(trip.getTrip_id())
                 .setValue(trip);
+
     }
 
     public void updateNotes(String trip_id, List<String> notes) {

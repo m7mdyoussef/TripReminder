@@ -119,6 +119,8 @@ public class AddBtnActivity extends AppCompatActivity {
     AlarmManager alarmManager;
     PendingIntent pendingIntent;
 
+
+    private TripModel oldTrip=new TripModel();
     Calendar mCalendar;
     Calendar myCalendarRound;
     Calendar currentCalendar;
@@ -136,6 +138,17 @@ public class AddBtnActivity extends AppCompatActivity {
         currentCalendar = Calendar.getInstance();
         // hideProgressBar();
 
+
+        Intent intent = getIntent();
+        Bundle args = intent.getBundleExtra("EDIT_BUNDLE");
+
+        if(args != null)
+        {
+            oldTrip = (TripModel) args.getSerializable("TRIP");
+            setData(oldTrip);
+
+        }
+
         firebaseDatabaseServices=new FirebaseDatabaseServices();
 
         //Auto Complete Google
@@ -148,6 +161,14 @@ public class AddBtnActivity extends AppCompatActivity {
 
     }
 
+    private void setData(TripModel trip) {
+        tripNameTextField.getEditText().setText(trip.getTripname());
+        //selectedStartPlace..setText(trip.getStartloc());
+        dateTextField.setText(trip.getDate());
+        timeTextField.setText(trip.getTime());
+        //tripNameTextField.getEditText().setText(trip.getNotes());
+        addTripBtn.setText(R.string.update);
+    }
 
     private void setUpAutoComplete() {
         AutocompleteSupportFragment placeStartPointAutoComplete;
@@ -230,8 +251,12 @@ public class AddBtnActivity extends AppCompatActivity {
                                 Constants.SEARCH_CHILD_UPCOMING_KEY);
 
 
-
+                        Log.i("TAG", "onViewClicked:111 "+addTripBtn.getText().toString());
+                        if(addTripBtn.getText().toString()==getString(R.string.update))
+                            firebaseDatabaseServices.deleteTrip(oldTrip.getTrip_id());
                         firebaseDatabaseServices.addTrip(newTrip);
+
+                        Log.i("TAG", "onViewClicked: tripID"+oldTrip.getTrip_id());
 
                         Intent resultIntent = new Intent();
                         resultIntent.putExtra("NEWTRIP", (Serializable) newTrip);
@@ -255,12 +280,13 @@ public class AddBtnActivity extends AppCompatActivity {
                                     , "start", notesList, mCalendar.getTime().toString(),
                                     Constants.SEARCH_CHILD_UPCOMING_KEY);
 
+                            Log.i("TAG", "onViewClicked:222 "+addTripBtn.getText().toString());
 
-                                firebaseDatabaseServices.addTrip(newTrip);
+                            if(addTripBtn.getText().toString()==getString(R.string.update))
+                            firebaseDatabaseServices.deleteTrip(oldTrip.getTrip_id());
+                            firebaseDatabaseServices.addTrip(newTrip);
 
-
-
-                                Intent resultIntent = new Intent();
+                            Intent resultIntent = new Intent();
                                 resultIntent.putExtra("NEWTRIP", (Serializable) newTrip);
                                 startAlarm(newTrip);
                                 setResult(Activity.RESULT_OK, resultIntent);
@@ -274,7 +300,13 @@ public class AddBtnActivity extends AppCompatActivity {
                                     , "start", notesList, myCalendarRound.getTime().toString(),
                                     Constants.SEARCH_CHILD_UPCOMING_KEY);
 
-                            firebaseDatabaseServices.addTrip(TripBack);
+
+                            Log.i("TAG", "onViewClicked:333 "+addTripBtn.getText().toString());
+
+                            if(addTripBtn.getText().toString()==getString(R.string.update))
+                                firebaseDatabaseServices.deleteTrip(oldTrip.getTrip_id());
+                            firebaseDatabaseServices.addTrip(newTrip);
+
 
                             Intent resultIntentback = new Intent();
                             resultIntentback.putExtra("TripBack", (Serializable) TripBack);
