@@ -22,13 +22,14 @@ public class ConnectionAvailability extends LiveData<Boolean> {
     public boolean isConnectingToInternet() {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
         if (connectivityManager != null) {
+
             NetworkInfo info = connectivityManager.getActiveNetworkInfo();
             if (info != null && info.isConnected()) {
                 return true;
-            }
+             }
         }
         return false;
     }
-
 }

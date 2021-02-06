@@ -26,10 +26,11 @@ public class FirebaseDatabaseServices {
         DatabaseRepo.getInstance().deleteTrip(trip_id);
     }
 
-    public void addTrip(TripModel trip)
+    public String addTrip(TripModel trip)
     {
 
         DatabaseRepo.getInstance().addTrip(trip);
+        return trip.getTrip_id();
     }
     public MutableLiveData<ArrayList<TripModel>> getTripsReport(String from, String to)
     {

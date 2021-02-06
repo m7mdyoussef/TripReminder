@@ -30,16 +30,17 @@ import com.example.tripreminder2021.pojo.TripModel;
 import com.example.tripreminder2021.pojo.TripStatus;
 import com.example.tripreminder2021.repository.FirebaseDatabaseServices;
 import com.example.tripreminder2021.ui.activities.AddBtnActivity;
+import com.example.tripreminder2021.ui.activities.MapsActivity;
 import com.example.tripreminder2021.zService.FloatingWindowService;
 import com.example.tripreminder2021.zService.MyDialogActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class UpcomingRecyclerViewAdapter extends RecyclerView.Adapter<UpcomingRecyclerViewAdapter.ViewHolder>{
 
-    private static final int SYSTEM_ALERT_WINDOW_PERMISSION = 2084;
 
     private ArrayList<TripModel> list;
     private Context context;
@@ -170,8 +171,9 @@ public class UpcomingRecyclerViewAdapter extends RecyclerView.Adapter<UpcomingRe
     {
         Intent intent = new Intent(context, AddBtnActivity.class);
         Bundle Bundle = new Bundle();
-        Bundle.putParcelable("LAST_VALUES", tripModel);
-        intent.putExtras(Bundle);
+        Bundle.putSerializable("TRIP",(Serializable) tripModel);
+        intent.putExtra("EDIT_BUNDLE",Bundle);
+        context.startActivity(intent);
     }
 
     private void showDeleteAlertDialog(String trip_id)

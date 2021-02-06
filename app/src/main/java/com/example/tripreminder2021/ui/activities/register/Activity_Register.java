@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.tripreminder2021.R;
 import com.example.tripreminder2021.dataValidation.DataValidator;
 import com.example.tripreminder2021.dataValidation.ValidationServices;
+import com.example.tripreminder2021.requests.InternetConnection;
 import com.example.tripreminder2021.ui.activities.login.Activity_Login;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -32,11 +33,32 @@ public class Activity_Register extends AppCompatActivity implements IRegisterCon
     private EditText Username,Email,Password;
     private TextInputLayout inputLayoutName,inputLayoutEmail, inputLayoutPassword;
 
+    private InternetConnection internetConnection;
+    private TextView internet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__register);
 
+        initViews();
+
+        getPresenter=new RegisterPresenter(this,this);
+        getValidator=new ValidationServices(this,this);
+
+        btn_register.setOnClickListener(v -> submitForm());
+        txt_login_link.setOnClickListener(v -> finish());
+
+        internetConnection.observe(this,aBoolean -> {
+            if (aBoolean)
+                internet.setVisibility(View.GONE);
+            else
+                internet.setVisibility(View.VISIBLE);
+
+        });
+    }
+
+    private void initViews(){
         Username=findViewById(R.id.register_username);
         Email=findViewById(R.id.register_email);
         Password=findViewById(R.id.register_password);
@@ -50,13 +72,8 @@ public class Activity_Register extends AppCompatActivity implements IRegisterCon
 
         progressBar = findViewById(R.id.login_progress);
         progressBar.setVisibility(View.GONE);
-
-
-        getPresenter=new RegisterPresenter(this,this);
-        getValidator=new ValidationServices(this,this);
-
-        btn_register.setOnClickListener(v -> submitForm());
-        txt_login_link.setOnClickListener(v -> finish());
+        internetConnection=new InternetConnection(this);
+        internet=findViewById(R.id.internet_status);
     }
 
     private void try_to_register(){

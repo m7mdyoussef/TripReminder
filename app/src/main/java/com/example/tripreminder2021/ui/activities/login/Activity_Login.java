@@ -25,6 +25,7 @@ import com.example.tripreminder2021.config.Constants;
 import com.example.tripreminder2021.config.SharedPreferencesManager;
 import com.example.tripreminder2021.dataValidation.DataValidator;
 import com.example.tripreminder2021.dataValidation.ValidationServices;
+import com.example.tripreminder2021.requests.InternetConnection;
 import com.example.tripreminder2021.ui.activities.UpcomingTripsActivity;
 import com.example.tripreminder2021.ui.activities.register.Activity_Register;
 import com.facebook.AccessToken;
@@ -34,6 +35,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 
 import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -43,6 +45,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -90,6 +93,9 @@ public class Activity_Login extends AppCompatActivity
     // password rest dialog
     private  AlertDialog alert;
 
+    private InternetConnection internetConnection;
+    private TextView internet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +130,7 @@ public class Activity_Login extends AppCompatActivity
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         //AppEventsLogger.activateApp(this);
+        loginWithFacebook.setReadPermissions("email");
 
         callbackManager = CallbackManager.Factory.create();
         loginWithFacebook.registerCallback(callbackManager,new FacebookCallBack());
@@ -167,6 +174,14 @@ public class Activity_Login extends AppCompatActivity
         tv_register_link.setOnClickListener(v -> startActivity(new Intent(this, Activity_Register.class)));
         restPassword.setOnClickListener(v -> initializeDialog());
         aSwitch.setOnClickListener(view -> saveUserData());
+
+        internetConnection.observe(this,aBoolean -> {
+            if (aBoolean)
+                internet.setVisibility(View.GONE);
+            else
+                internet.setVisibility(View.VISIBLE);
+
+        });
     }
 
     private void initViews() {
@@ -186,6 +201,9 @@ public class Activity_Login extends AppCompatActivity
         // Set the dimensions of the sign-in button.
         loginWithGoogle = findViewById(R.id.login_with_google);
         loginWithGoogle.setSize(SignInButton.SIZE_STANDARD);
+
+        internetConnection=new InternetConnection(this);
+        internet=findViewById(R.id.internet_status);
     }
 
     private void saveUserData() {

@@ -78,14 +78,18 @@ public class DatabaseRepo {
                 .child(trip_id).removeValue();
     }
 
-    public void addTrip(TripModel trip)    {
+    public String addTrip(TripModel trip)    {
+        String trip_id="id";
         trip.setTrip_id(reference.child(Constants.TRIP_CHILD_NAME)
                 .child(Constants.CURRENT_USER_ID)
                 .push().getKey());
+        trip_id=trip.getTrip_id();
         reference.child(Constants.TRIP_CHILD_NAME)
                 .child(Constants.CURRENT_USER_ID)
                 .child(trip.getTrip_id())
                 .setValue(trip);
+
+        return trip_id;
     }
 
     public void updateNotes(String trip_id, List<String> notes) {

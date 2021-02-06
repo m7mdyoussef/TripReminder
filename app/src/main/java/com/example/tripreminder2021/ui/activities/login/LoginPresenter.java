@@ -50,7 +50,8 @@ public class LoginPresenter implements ILoginContract.Presenter{
             firebaseAuth.signInWithEmailAndPassword(email,password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()){
-                            doAfterLoginSuccess();
+                            doAfterLoginSuccess(firebaseAuth.getCurrentUser().getUid(),
+                                    firebaseAuth.getCurrentUser().getEmail());
                         }
                         else {
                             toLoginView.onLoginError(task.getException().getMessage());
@@ -73,7 +74,7 @@ public class LoginPresenter implements ILoginContract.Presenter{
                         databaseReference.child(Constants.USER_CHILD_NAME).child(user.getUid()).child("name").setValue(user.getDisplayName());
                         databaseReference.child(Constants.USER_CHILD_NAME).child(user.getUid()).child("password").setValue("Login with google");
 
-                        doAfterLoginSuccess();
+                        doAfterLoginSuccess(user.getUid(),user.getEmail());
                     } else {
                         toLoginView.onLoginError(task.getException().getMessage());
                     }
@@ -94,7 +95,10 @@ public class LoginPresenter implements ILoginContract.Presenter{
                         databaseReference.child(Constants.USER_CHILD_NAME).child(user.getUid()).
                                 setValue(facebookUser);
 
-                        doAfterLoginSuccess();
+                        Log.i("TAG", "loginWithFacebook: "+user.getDisplayName());
+
+
+                        doAfterLoginSuccess(user.getUid(),user.getDisplayName());
                     }
                     else {
                         toLoginView.onLoginError(task.getException().getMessage());
@@ -115,7 +119,7 @@ public class LoginPresenter implements ILoginContract.Presenter{
                        User twitterUser=new User(user.getDisplayName(),user.getEmail(),"Login using twitter");
                        databaseReference.child(Constants.USER_CHILD_NAME).child(user.getUid()).
                                setValue(twitterUser);
-                       doAfterLoginSuccess();
+                       doAfterLoginSuccess(user.getUid(),user.getDisplayName());
                    }
                    else {
                        toLoginView.onLoginError(task.getException().getMessage());
@@ -138,15 +142,12 @@ public class LoginPresenter implements ILoginContract.Presenter{
                 });
     }
 
-    private void doAfterLoginSuccess()
+    private void doAfterLoginSuccess(String uId,String email)
     {
         sharedPreferencesManager.setUserLogin(true);
-        sharedPreferencesManager.setCurrentUserID(firebaseAuth.getCurrentUser().getUid());
-        sharedPreferencesManager.setCurrentUserEmail(firebaseAuth.getCurrentUser().getEmail());
-        Log.i("TAG", "sharedPreferencesManager: "+sharedPreferencesManager.getCurrentUserId());
-        Log.i("TAG", "sharedPreferencesManager: "+sharedPreferencesManager.getCurrentUserEmail());
-        Constants.CURRENT_USER_ID=firebaseAuth.getCurrentUser().getUid();
-        Log.i("TAG", "constant: "+Constants.CURRENT_USER_ID);
+        sharedPreferencesManager.setCurrentUserID(uId);
+        sharedPreferencesManager.setCurrentUserEmail(email);
+        Constants.CURRENT_USER_ID=uId;
 
         toLoginView.onLoginSuccess();
     }

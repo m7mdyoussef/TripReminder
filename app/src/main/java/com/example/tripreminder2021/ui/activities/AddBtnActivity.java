@@ -132,6 +132,11 @@ public class AddBtnActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_btn);
 
+        Intent intent = getIntent();
+        Bundle args = intent.getBundleExtra("EDIT_BUNDLE");
+        TripModel trip = (TripModel) args.getSerializable("TRIP");
+
+
         ButterKnife.bind(this);
         mCalendar = Calendar.getInstance();
         myCalendarRound = Calendar.getInstance();
@@ -139,6 +144,10 @@ public class AddBtnActivity extends AppCompatActivity
         // hideProgressBar();
 
         firebaseDatabaseServices=new FirebaseDatabaseServices();
+        if (trip != null) {
+
+        } else
+            Toast.makeText(this, "empty", Toast.LENGTH_SHORT).show();
 
         //Auto Complete Google
         setUpAutoComplete();
@@ -232,11 +241,11 @@ public class AddBtnActivity extends AppCompatActivity
 
 
 
-                        firebaseDatabaseServices.addTrip(newTrip);
+                        String id=firebaseDatabaseServices.addTrip(newTrip);
 
                         Intent resultIntent = new Intent();
                         resultIntent.putExtra("NEWTRIP", (Serializable) newTrip);
-                        startAlarm(newTrip);
+                        startAlarm(newTrip,id);
                         setResult(Activity.RESULT_OK, resultIntent);
                         Toast.makeText(this, "Added Successfully", Toast.LENGTH_SHORT).show();
                         finish();
@@ -257,13 +266,13 @@ public class AddBtnActivity extends AppCompatActivity
                                     Constants.SEARCH_CHILD_UPCOMING_KEY);
 
 
-                                firebaseDatabaseServices.addTrip(newTrip);
+                                String id=firebaseDatabaseServices.addTrip(newTrip);
 
 
 
                                 Intent resultIntent = new Intent();
                                 resultIntent.putExtra("NEWTRIP", (Serializable) newTrip);
-                                startAlarm(newTrip);
+                                startAlarm(newTrip,id);
                                 setResult(Activity.RESULT_OK, resultIntent);
 
 
@@ -514,7 +523,7 @@ public class AddBtnActivity extends AppCompatActivity
 
     }
 
-    private void startAlarm(TripModel tripModel) {
+    private void startAlarm(TripModel tripModel,String trip_id) {
 
         Random random = new Random();
         int i = random.nextInt((1000 - 1) + 1) + 1;
@@ -526,7 +535,7 @@ public class AddBtnActivity extends AppCompatActivity
         intent.putExtra(NEW_TRIP_OBJECT, b);
 
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, i , intent,
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, Integer.parseInt(trip_id) , intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
