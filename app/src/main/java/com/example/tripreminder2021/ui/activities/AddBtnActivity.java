@@ -386,9 +386,9 @@ public class AddBtnActivity extends AppCompatActivity {
                         String aTime2 = new StringBuilder().append(hours2).append(':')
                                 .append(min2).append(" ").append(timeSet2).toString();
                         timeTextField.setText(aTime2);
-                        myCalendarRound.set(Calendar.HOUR_OF_DAY, selectedHour);
-                        myCalendarRound.set(Calendar.MINUTE, selectedMinute - 1);
-                        myCalendarRound.set(Calendar.SECOND, 59);
+                        mCalendar.set(Calendar.HOUR_OF_DAY, selectedHour);
+                        mCalendar.set(Calendar.MINUTE, selectedMinute - 1);
+                        mCalendar.set(Calendar.SECOND, 59);
                     }
                 }, hour, minute, false);
                 mTimePicker3.setTitle("Select Time");
