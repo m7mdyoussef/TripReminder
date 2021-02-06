@@ -1,6 +1,7 @@
 package com.example.tripreminder2021.ui.activities.register;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +17,10 @@ import android.widget.Toast;
 import com.example.tripreminder2021.R;
 import com.example.tripreminder2021.dataValidation.DataValidator;
 import com.example.tripreminder2021.dataValidation.ValidationServices;
+import com.example.tripreminder2021.requests.InternetConnection;
 import com.example.tripreminder2021.ui.activities.login.Activity_Login;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class Activity_Register extends AppCompatActivity implements IRegisterContract.View , DataValidator.View{
@@ -32,11 +36,37 @@ public class Activity_Register extends AppCompatActivity implements IRegisterCon
     private EditText Username,Email,Password;
     private TextInputLayout inputLayoutName,inputLayoutEmail, inputLayoutPassword;
 
+    private InternetConnection internetConnection;
+    private CoordinatorLayout coordinatorLayout;
+    private Snackbar snackBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__register);
+        coordinatorLayout =findViewById(R.id.register_coordinator_layout);
 
+        initViews();
+
+        getPresenter=new RegisterPresenter(this,this);
+        getValidator=new ValidationServices(this,this);
+
+        btn_register.setOnClickListener(v -> submitForm());
+        txt_login_link.setOnClickListener(v -> finish());
+
+        snackBar = Snackbar.make(coordinatorLayout,getString(R.string.no_internet),
+                BaseTransientBottomBar.LENGTH_INDEFINITE);
+        snackBar.show();
+        internetConnection.observe(this,aBoolean -> {
+
+            if (!aBoolean)
+                snackBar.show();
+            else
+                snackBar.dismiss();
+        });
+    }
+
+    private void initViews(){
         Username=findViewById(R.id.register_username);
         Email=findViewById(R.id.register_email);
         Password=findViewById(R.id.register_password);
@@ -50,13 +80,7 @@ public class Activity_Register extends AppCompatActivity implements IRegisterCon
 
         progressBar = findViewById(R.id.login_progress);
         progressBar.setVisibility(View.GONE);
-
-
-        getPresenter=new RegisterPresenter(this,this);
-        getValidator=new ValidationServices(this,this);
-
-        btn_register.setOnClickListener(v -> submitForm());
-        txt_login_link.setOnClickListener(v -> finish());
+        internetConnection=new InternetConnection(this);
     }
 
     private void try_to_register(){

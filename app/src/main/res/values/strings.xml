@@ -38,7 +38,7 @@
     <string name="create_account">Create new Account</string>
     <string name="enter_name_hint">Enter The User Name</string>
     <string name="register_button">Register</string>
-    <string name="already_have_account">Login</string>
+    <string name="already_have_account">Have Account?? Login</string>
     <string name="submit">Submit</string>
     <string name="restPasswordTitle">Rest Password</string>
     <string name="enter_valid_email">Enter Valid Email</string>
@@ -88,6 +88,12 @@
     <string name="average_time">Average Time</string>
     <string name="total_average_speed">Average Speed</string>
     <string name="this_report_does_not_include_deleted_trips">This Report Does not include Deleted Trips</string>
+    <string name="no_internet">No Internet Connection !!</string>
+    <string name="internet_back">Back Online</string>
+    <string name="hour">H</string>
+    <string name="km">KM</string>
+    <string name="click_again_to_exit">Click Again To Exit</string>
+    <string name="update">Update</string>
 
 
 </resources>

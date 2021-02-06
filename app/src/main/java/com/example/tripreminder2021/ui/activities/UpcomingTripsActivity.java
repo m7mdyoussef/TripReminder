@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.tripreminder2021.config.SharedPreferencesManager;
 import com.example.tripreminder2021.pojo.LocalHelper;
+import com.example.tripreminder2021.requests.InternetConnection;
 import com.example.tripreminder2021.ui.activities.login.Activity_Login;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -31,8 +32,11 @@ import androidx.annotation.RequiresApi;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.tripreminder2021.*;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Locale;
@@ -51,12 +55,19 @@ public class UpcomingTripsActivity extends AppCompatActivity {
     private SharedPreferencesManager sharedPreferencesManager;
     AlertDialog dialog;
 
+    private InternetConnection internetConnection;
+
+    DrawerLayout coordinatorLayout;
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadLocale();
         setContentView(R.layout.activity_upcoming_trips);
+        coordinatorLayout =findViewById(R.id.drawer_layout);
+
+
         if (!Settings.canDrawOverlays(this)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + getPackageName()));
@@ -80,6 +91,18 @@ public class UpcomingTripsActivity extends AppCompatActivity {
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        internetConnection=new InternetConnection(this);
+
+        final Snackbar snackBar = Snackbar.make(coordinatorLayout,getString(R.string.no_internet),
+                BaseTransientBottomBar.LENGTH_INDEFINITE);
+        internetConnection.observe(this,aBoolean -> {
+
+            if (!aBoolean)
+                snackBar.show();
+            else
+                snackBar.dismiss();
+        });
 
         View header=navigationView.getHeaderView(0);
         TextView userMail = header.findViewById(R.id.user_email);

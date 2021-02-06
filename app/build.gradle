@@ -65,6 +65,11 @@ android {
         implementation 'com.google.firebase:firebase-auth:20.0.2'
 
 
+        // room database
+        implementation "androidx.room:room-runtime:2.2.6"
+        annotationProcessor "androidx.room:room-compiler:2.2.6"
+
+
         //twitter
 
         //implementation('com.twitter.sdk.android:twitter:3.3.0@aar') { transitive = true }

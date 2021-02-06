@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.navigation.report.ReportFragment">
-
     <ImageView
         android:id="@+id/date_Picker_start"
         android:layout_width="100dp"
@@ -84,7 +83,6 @@
         android:id="@+id/relative_report"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#DFD9D9"
         android:layout_marginTop="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -371,47 +369,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="10dp"
-                        app:cardBackgroundColor="#E32867"
-                        app:cardCornerRadius="20dp">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginHorizontal="16dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/total_average_speed"
-                                android:textAppearance="?android:textAppearanceMedium"
-                                android:textColor="#000000"
-                                android:textSize="20dp"
-                                android:textStyle="bold"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/txt_average_speed"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:textAppearanceLarge"
-                                android:textColor="#000000"
-                                android:textSize="20dp"
-                                android:textStyle="bold"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </androidx.cardview.widget.CardView>
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginTop="10dp"
                         app:cardBackgroundColor="#F8F5F6"
                         app:cardCornerRadius="20dp">
 
@@ -428,7 +385,7 @@
                                 android:textAppearance="?android:textAppearanceMedium"
                                 android:textColor="#E31010"
                                 android:textDirection="locale"
-                                android:textSize="15dp"
+                                android:textSize="10dp"
                                 android:textAlignment="center"
                                 android:textStyle="bold"
                                 app:layout_constraintBottom_toBottomOf="parent"
