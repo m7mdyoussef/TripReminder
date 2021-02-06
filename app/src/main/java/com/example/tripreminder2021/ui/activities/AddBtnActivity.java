@@ -582,13 +582,7 @@ public class AddBtnActivity extends AppCompatActivity {
         int j = random2.nextInt((1000 - 1) + 1) + 1;
 
        AlarmManager alarmManager2 = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-//        Calendar cal = Calendar.getInstance();
-//        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-//        try {
-//            cal.setTime(sdf.parse(tripModel.dateTime));// all done
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
+
         Intent intent = new Intent(this, AlarmEventReciever.class);
         Bundle b = new Bundle();
         b.putParcelable(AddBtnActivity.NEW_TRIP_OBJ_SERIAL, tripModel);
