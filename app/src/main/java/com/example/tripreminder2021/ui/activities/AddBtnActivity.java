@@ -121,6 +121,8 @@ public class AddBtnActivity extends AppCompatActivity
     AlarmManager alarmManager;
     PendingIntent pendingIntent;
 
+
+    private TripModel oldTrip=new TripModel();
     Calendar mCalendar;
     Calendar myCalendarRound;
     Calendar currentCalendar;
@@ -132,9 +134,6 @@ public class AddBtnActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_btn);
 
-        Intent intent = getIntent();
-        Bundle args = intent.getBundleExtra("EDIT_BUNDLE");
-        TripModel trip = (TripModel) args.getSerializable("TRIP");
 
 
         ButterKnife.bind(this);
@@ -143,12 +142,18 @@ public class AddBtnActivity extends AppCompatActivity
         currentCalendar = Calendar.getInstance();
         // hideProgressBar();
 
+
+        Intent intent = getIntent();
+        Bundle args = intent.getBundleExtra("EDIT_BUNDLE");
+
+        if(args != null)
+        {
+            oldTrip = (TripModel) args.getSerializable("TRIP");
+            setData(oldTrip);
+
+        }
+
         firebaseDatabaseServices=new FirebaseDatabaseServices();
-        if (trip != null) {
-
-        } else
-            Toast.makeText(this, "empty", Toast.LENGTH_SHORT).show();
-
         //Auto Complete Google
         setUpAutoComplete();
 
@@ -159,6 +164,14 @@ public class AddBtnActivity extends AppCompatActivity
 
     }
 
+    private void setData(TripModel trip) {
+        tripNameTextField.getEditText().setText(trip.getTripname());
+        //selectedStartPlace..setText(trip.getStartloc());
+        dateTextField.setText(trip.getDate());
+        timeTextField.setText(trip.getTime());
+        //tripNameTextField.getEditText().setText(trip.getNotes());
+        addTripBtn.setText(R.string.update);
+    }
     private void setUpAutoComplete() {
         AutocompleteSupportFragment placeStartPointAutoComplete;
         AutocompleteSupportFragment placeDestPointAutoComplete;
@@ -240,12 +253,16 @@ public class AddBtnActivity extends AppCompatActivity
                                 Constants.SEARCH_CHILD_UPCOMING_KEY);
 
 
+                        Log.i("TAG", "onViewClicked:111 "+addTripBtn.getText().toString());
+                        if(addTripBtn.getText().toString()==getString(R.string.update))
+                            firebaseDatabaseServices.deleteTrip(oldTrip.getTrip_id());
+                        firebaseDatabaseServices.addTrip(newTrip);
 
-                        String id=firebaseDatabaseServices.addTrip(newTrip);
+                        Log.i("TAG", "onViewClicked: tripID"+oldTrip.getTrip_id());
 
                         Intent resultIntent = new Intent();
                         resultIntent.putExtra("NEWTRIP", (Serializable) newTrip);
-                        startAlarm(newTrip,id);
+                        startAlarm(newTrip);
                         setResult(Activity.RESULT_OK, resultIntent);
                         Toast.makeText(this, "Added Successfully", Toast.LENGTH_SHORT).show();
                         finish();
@@ -265,14 +282,15 @@ public class AddBtnActivity extends AppCompatActivity
                                     , "start", notesList, mCalendar.getTime().toString(),
                                     Constants.SEARCH_CHILD_UPCOMING_KEY);
 
+                            Log.i("TAG", "onViewClicked:222 "+addTripBtn.getText().toString());
 
-                                String id=firebaseDatabaseServices.addTrip(newTrip);
+                            if(addTripBtn.getText().toString()==getString(R.string.update))
+                            firebaseDatabaseServices.deleteTrip(oldTrip.getTrip_id());
+                            firebaseDatabaseServices.addTrip(newTrip);
 
-
-
-                                Intent resultIntent = new Intent();
+                            Intent resultIntent = new Intent();
                                 resultIntent.putExtra("NEWTRIP", (Serializable) newTrip);
-                                startAlarm(newTrip,id);
+                                startAlarm(newTrip);
                                 setResult(Activity.RESULT_OK, resultIntent);
 
 
@@ -284,13 +302,18 @@ public class AddBtnActivity extends AppCompatActivity
                                     , "start", notesList, myCalendarRound.getTime().toString(),
                                     Constants.SEARCH_CHILD_UPCOMING_KEY);
 
-                            firebaseDatabaseServices.addTrip(TripBack);
+
+                            Log.i("TAG", "onViewClicked:333 "+addTripBtn.getText().toString());
+
+                            if(addTripBtn.getText().toString()==getString(R.string.update))
+                                firebaseDatabaseServices.deleteTrip(oldTrip.getTrip_id());
+                            firebaseDatabaseServices.addTrip(newTrip);
+
 
                             Intent resultIntentback = new Intent();
                             resultIntentback.putExtra("TripBack", (Serializable) TripBack);
                             startAlarmBack(TripBack);
                             setResult(Activity.RESULT_OK, resultIntentback);
-
 
                             Toast.makeText(this, "Added Successfully", Toast.LENGTH_SHORT).show();
                             finish();
@@ -523,7 +546,7 @@ public class AddBtnActivity extends AppCompatActivity
 
     }
 
-    private void startAlarm(TripModel tripModel,String trip_id) {
+    private void startAlarm(TripModel tripModel) {
 
         Random random = new Random();
         int i = random.nextInt((1000 - 1) + 1) + 1;
@@ -535,14 +558,13 @@ public class AddBtnActivity extends AppCompatActivity
         intent.putExtra(NEW_TRIP_OBJECT, b);
 
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, Integer.parseInt(trip_id) , intent,
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, i , intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
         else
         alarmManager.set(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
-
     }
 
 
@@ -578,9 +600,4 @@ public class AddBtnActivity extends AppCompatActivity
         }
 
     }
-
-
-
-
-
 }

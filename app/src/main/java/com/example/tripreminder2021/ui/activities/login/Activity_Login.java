@@ -2,6 +2,8 @@ package com.example.tripreminder2021.ui.activities.login;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -46,6 +48,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -94,7 +98,8 @@ public class Activity_Login extends AppCompatActivity
     private  AlertDialog alert;
 
     private InternetConnection internetConnection;
-    private TextView internet;
+    private CoordinatorLayout coordinatorLayout;
+    private  Snackbar snackBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +113,7 @@ public class Activity_Login extends AppCompatActivity
         }
 
         setContentView(R.layout.activity__login);
+        coordinatorLayout =findViewById(R.id.login_coordinator_layout);
 
         initViews();
         getPresenter = new LoginPresenter(this, this);
@@ -175,12 +181,15 @@ public class Activity_Login extends AppCompatActivity
         restPassword.setOnClickListener(v -> initializeDialog());
         aSwitch.setOnClickListener(view -> saveUserData());
 
+        snackBar = Snackbar.make(coordinatorLayout,getString(R.string.no_internet),
+                BaseTransientBottomBar.LENGTH_INDEFINITE);
+        snackBar.show();
         internetConnection.observe(this,aBoolean -> {
-            if (aBoolean)
-                internet.setVisibility(View.GONE);
-            else
-                internet.setVisibility(View.VISIBLE);
 
+            if (!aBoolean)
+                snackBar.show();
+            else
+                snackBar.dismiss();
         });
     }
 
@@ -203,7 +212,6 @@ public class Activity_Login extends AppCompatActivity
         loginWithGoogle.setSize(SignInButton.SIZE_STANDARD);
 
         internetConnection=new InternetConnection(this);
-        internet=findViewById(R.id.internet_status);
     }
 
     private void saveUserData() {
@@ -266,6 +274,7 @@ public class Activity_Login extends AppCompatActivity
 
         }
         FirebaseAuth.getInstance().addAuthStateListener(authStateListener);
+        snackBar.show();
         super.onStart();
     }
     @Override
@@ -286,7 +295,8 @@ public class Activity_Login extends AppCompatActivity
             }
         } else {
 
-            Toast.makeText(getApplicationContext(), "Click Again To Exit", Toast.LENGTH_SHORT).show();
+            Snackbar.make(coordinatorLayout,getString(R.string.click_again_to_exit),BaseTransientBottomBar.LENGTH_SHORT).show();
+
         }
         back_pressed = System.currentTimeMillis();
     }

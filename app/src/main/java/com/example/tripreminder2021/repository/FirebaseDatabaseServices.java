@@ -1,4 +1,6 @@
 package com.example.tripreminder2021.repository;
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.tripreminder2021.pojo.TripModel;
@@ -23,14 +25,14 @@ public class FirebaseDatabaseServices {
         DatabaseRepo.getInstance().updateNotes(trip_id,notes);
     }
     public void deleteTrip(String trip_id) {
+
         DatabaseRepo.getInstance().deleteTrip(trip_id);
     }
 
-    public String addTrip(TripModel trip)
+    public void addTrip(TripModel trip)
     {
 
         DatabaseRepo.getInstance().addTrip(trip);
-        return trip.getTrip_id();
     }
     public MutableLiveData<ArrayList<TripModel>> getTripsReport(String from, String to)
     {

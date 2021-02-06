@@ -1,6 +1,7 @@
 package com.example.tripreminder2021.ui.activities.register;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import com.example.tripreminder2021.dataValidation.DataValidator;
 import com.example.tripreminder2021.dataValidation.ValidationServices;
 import com.example.tripreminder2021.requests.InternetConnection;
 import com.example.tripreminder2021.ui.activities.login.Activity_Login;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class Activity_Register extends AppCompatActivity implements IRegisterContract.View , DataValidator.View{
@@ -34,12 +37,14 @@ public class Activity_Register extends AppCompatActivity implements IRegisterCon
     private TextInputLayout inputLayoutName,inputLayoutEmail, inputLayoutPassword;
 
     private InternetConnection internetConnection;
-    private TextView internet;
+    private CoordinatorLayout coordinatorLayout;
+    private Snackbar snackBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__register);
+        coordinatorLayout =findViewById(R.id.register_coordinator_layout);
 
         initViews();
 
@@ -49,12 +54,15 @@ public class Activity_Register extends AppCompatActivity implements IRegisterCon
         btn_register.setOnClickListener(v -> submitForm());
         txt_login_link.setOnClickListener(v -> finish());
 
+        snackBar = Snackbar.make(coordinatorLayout,getString(R.string.no_internet),
+                BaseTransientBottomBar.LENGTH_INDEFINITE);
+        snackBar.show();
         internetConnection.observe(this,aBoolean -> {
-            if (aBoolean)
-                internet.setVisibility(View.GONE);
-            else
-                internet.setVisibility(View.VISIBLE);
 
+            if (!aBoolean)
+                snackBar.show();
+            else
+                snackBar.dismiss();
         });
     }
 
@@ -73,7 +81,6 @@ public class Activity_Register extends AppCompatActivity implements IRegisterCon
         progressBar = findViewById(R.id.login_progress);
         progressBar.setVisibility(View.GONE);
         internetConnection=new InternetConnection(this);
-        internet=findViewById(R.id.internet_status);
     }
 
     private void try_to_register(){
