@@ -23,6 +23,7 @@ import com.example.tripreminder2021.config.SharedPreferencesManager;
 import com.example.tripreminder2021.pojo.LocalHelper;
 import com.example.tripreminder2021.requests.InternetConnection;
 import com.example.tripreminder2021.ui.activities.login.Activity_Login;
+import com.example.tripreminder2021.ui.navigation.upComing.UpcomingFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -41,6 +42,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Locale;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -50,7 +53,7 @@ import androidx.navigation.ui.NavigationUI;
 public class UpcomingTripsActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-
+    Fragment fragment;
     FloatingActionButton fab;
     private SharedPreferencesManager sharedPreferencesManager;
     AlertDialog dialog;
@@ -232,9 +235,11 @@ public class UpcomingTripsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
-        finishAffinity();
+        super.onBackPressed();
+       // finishAffinity();
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -110,6 +110,8 @@ public class Activity_Login extends AppCompatActivity
         if (sharedPreferencesManager.isUserLogin()) {
             Intent intent = new Intent(Activity_Login.this, UpcomingTripsActivity.class);
             startActivity(intent);
+            finish();
+
         }
 
         setContentView(R.layout.activity__login);
@@ -129,6 +131,7 @@ public class Activity_Login extends AppCompatActivity
         loginWithGoogle.setOnClickListener(v -> {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, 100);
+
         });
 
         // configure facebook
@@ -325,6 +328,7 @@ public class Activity_Login extends AppCompatActivity
         btn_login.setEnabled(true);
         Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this, UpcomingTripsActivity.class));
+        finish();
     }
 
     @Override
