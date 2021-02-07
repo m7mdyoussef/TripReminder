@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.example.tripreminder2021.pojo.TripStatus;
 import com.example.tripreminder2021.repository.FirebaseDatabaseServices;
 import com.example.tripreminder2021.ui.activities.AddBtnActivity;
 import com.example.tripreminder2021.zService.AlarmEventReciever;
+import com.example.tripreminder2021.ui.activities.ShowNotesActivity;
 import com.example.tripreminder2021.zService.FloatingWindowService;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -42,13 +44,13 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.Serializable;
 import java.util.AbstractSequentialList;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UpcomingRecyclerViewAdapter extends RecyclerView.Adapter<UpcomingRecyclerViewAdapter.ViewHolder>{
 
-int increasedID=0;
     private ArrayList<TripModel> list;
     private Context context;
-    FirebaseDatabaseServices firebaseDatabaseServices;
+    private FirebaseDatabaseServices firebaseDatabaseServices;
 
     public UpcomingRecyclerViewAdapter(ArrayList<TripModel> list,Context context)
     {
@@ -101,7 +103,6 @@ int increasedID=0;
     }
 
     private void showPopupMenu(View view,TripModel currentTrip) {
-        // inflate menu
         androidx.appcompat.widget.PopupMenu popup = new PopupMenu(view.getContext(),view);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.upcoming_menu, popup.getMenu());
@@ -110,15 +111,20 @@ int increasedID=0;
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_upcoming_show_notes:
-                        //currentTrip.getNotes();
 
+                        PopupMenu popup = new PopupMenu(context,view);
+                        for (int i = 0; i < currentTrip.getNotes().size(); i++) {
+                            popup.getMenu().add(Menu.NONE, 1, Menu.NONE, currentTrip.getNotes().get(i));
+                        }
+                        popup.show();
                         return true;
 
                     case R.id.action_upcoming_add_notes:
-
-
-                        addNoteScenario(currentTrip);
-                       // firebaseDatabaseServices.updateNotes(currentTrip.getTrip_id(),currentTrip.getNotes());
+                        Intent intent = new Intent(context, ShowNotesActivity.class);
+                        Bundle Bundle = new Bundle();
+                        Bundle.putSerializable("CURRENT_NOTES",(Serializable) currentTrip);
+                        intent.putExtra("ADD_BUNDLE",Bundle);
+                        context.startActivity(intent);
                         return true;
 
                     case R.id.action_upcoming_edit_trip:
@@ -173,65 +179,6 @@ int increasedID=0;
         });
         popup.show();
     }
-
-
-
-
-    private void addNoteScenario(TripModel currentTrip) {
-
-        AlertDialog alert;
-
-        final LayoutInflater inflater = LayoutInflater.from(context);
-        final View inflate_view = inflater.inflate(R.layout.add_notes_sayout_sample1, null);
-
-       ArrayList<TextInputLayout> mNotesTextInputLayout = new ArrayList<>();
-        final LinearLayout currentParent =inflate_view.findViewById(R.id.notes_linearLayout1);
-
-        final View linearLayout = inflater.inflate(R.layout.add_notes_sayout_sample, null);
-
-        final TextInputLayout noteTextInput = linearLayout.findViewById(R.id.note_text_field_input1);
-        mNotesTextInputLayout.add(noteTextInput);
-
-        ImageButton subImgBtn = linearLayout.findViewById(R.id.sub_note_img_btn);
-        ImageButton subImgBtn1 = inflate_view.findViewById(R.id.sub_note_img_btn1);
-
-        subImgBtn.setOnClickListener(v -> {
-            currentParent.removeView(linearLayout);
-            mNotesTextInputLayout.remove(noteTextInput);
-        });
-
-        subImgBtn1.setOnClickListener(v -> {
-            inflater.inflate(R.layout.add_notes_sayout_sample, null);
-
-        });
-
-
-
-
-
-
-
-        currentParent.addView(linearLayout);
-        increasedID++;
-
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(inflate_view);
-        builder.setCancelable(false);
-
-        builder.setPositiveButton((R.string.cancel), (dialog, id) -> saveNotes(currentTrip));
-        alert = builder.create();
-        alert.show();
-
-    }
-
-    private void saveNotes(TripModel trip)
-    {
-        Log.i("TAG", "saveNotes: "+trip.getNotes().size());
-    }
-
-
     @Override
     public int getItemCount() {
         return list.size();
@@ -288,11 +235,5 @@ int increasedID=0;
         this.list=list;
         notifyDataSetChanged();
     }
-
-    private void generateNoteLayout(View view) {
-
-
-    }
-
 
 }

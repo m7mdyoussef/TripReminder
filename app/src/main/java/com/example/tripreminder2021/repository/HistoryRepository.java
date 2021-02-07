@@ -36,7 +36,8 @@ public class HistoryRepository {
     public MutableLiveData<ArrayList<TripModel>> getHistoryTrips()
     {
         ArrayList<TripModel> allTrips=new ArrayList<>();
-
+        allTrips.clear();
+        trips.setValue(allTrips);
         FirebaseDatabase database=FirebaseDatabase.getInstance();
         DatabaseReference reference=database.getReference();
         Query query=reference.child(Constants.TRIP_CHILD_NAME).

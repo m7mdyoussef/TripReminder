@@ -10,39 +10,15 @@
         android:name="com.example.tripreminder2021.ui.navigation.upComing.UpcomingFragment"
         android:label="UpComing Trips"
         tools:layout="@layout/fragment_home">
-
-        <action
-            android:id="@+id/action_HomeFragment_to_History"
-            app:destination="@id/nav_history" />
-        <action
-            android:id="@+id/action_nav_home_to_nav_sync"
-            app:destination="@id/nav_sync" />
     </fragment>
+
+
     <fragment
         android:id="@+id/nav_history"
         android:name="com.example.tripreminder2021.ui.navigation.history.HistoryFragment"
         android:label="@string/home_second"
         tools:layout="@layout/fragment_history">
-
-
-        <argument
-            android:name="myArg"
-            app:argType="string" />
     </fragment>
-
-    <fragment
-        android:id="@+id/nav_sync"
-        android:name="com.example.tripreminder2021.ui.navigation.history.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_logout"
-        android:name="com.example.tripreminder2021.ui.navigation.report.ReportFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_reports" />
-
-
 
     <fragment
         android:id="@+id/nav_report"
