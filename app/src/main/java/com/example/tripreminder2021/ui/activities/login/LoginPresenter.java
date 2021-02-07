@@ -145,7 +145,7 @@ public class LoginPresenter implements ILoginContract.Presenter{
     private void doAfterLoginSuccess(String uId,String email)
     {
         sharedPreferencesManager.setUserLogin(true);
-        sharedPreferencesManager.setCurrentUserID(uId);
+        sharedPreferencesManager.setCurrentUserID(firebaseAuth.getCurrentUser().getUid());
         sharedPreferencesManager.setCurrentUserEmail(email);
         Constants.CURRENT_USER_ID=uId;
 

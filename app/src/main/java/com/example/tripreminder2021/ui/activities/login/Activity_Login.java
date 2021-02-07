@@ -136,7 +136,7 @@ public class Activity_Login extends AppCompatActivity
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         //AppEventsLogger.activateApp(this);
-        loginWithFacebook.setReadPermissions("email");
+        //loginWithFacebook.setReadPermissions("email");
 
         callbackManager = CallbackManager.Factory.create();
         loginWithFacebook.registerCallback(callbackManager,new FacebookCallBack());

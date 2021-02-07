@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,12 +64,15 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.action_history_view_notes:
-                    //current.getNotes();
-                    Log.i("TAG", "onMenuItemClick: " +currentTrip);
+                    PopupMenu popup1 = new PopupMenu(context,view);
+                    for (int i = 0; i < currentTrip.getNotes().size(); i++) {
+                        popup.getMenu().add(Menu.NONE, 1, Menu.NONE, currentTrip.getNotes().get(i));
+                    }
+                    popup1.show();
                     return true;
                 case R.id.action_history_delete_note:
+
                     showDeleteAlertDialog(currentTrip.getTrip_id());
-                    Log.i("TAG", "onMenuItemClick: " + currentTrip.getDate());
                     return true;
                 default:
             }
