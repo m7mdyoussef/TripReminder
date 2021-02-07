@@ -94,6 +94,8 @@
     <string name="km">KM</string>
     <string name="click_again_to_exit">Click Again To Exit</string>
     <string name="update">Update</string>
+    <string name="add_your_note">Add Your Note</string>
+    <string name="save_your_notes">Save</string>
 
 
 </resources>

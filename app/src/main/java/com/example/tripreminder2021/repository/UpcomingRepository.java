@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.tripreminder2021.config.*;
@@ -35,6 +36,10 @@ public class UpcomingRepository {
     public MutableLiveData<ArrayList<TripModel>> getUpcomingTrips()
     {
         ArrayList<TripModel> allTrips=new ArrayList<>();
+
+        allTrips.clear();
+        trips.setValue(allTrips);
+
         Log.i("TAG", "getTrips: "+Constants.CURRENT_USER_ID);
         FirebaseDatabase database=FirebaseDatabase.getInstance();
         DatabaseReference reference=database.getReference();
