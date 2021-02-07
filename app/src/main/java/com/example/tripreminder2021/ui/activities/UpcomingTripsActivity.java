@@ -56,9 +56,7 @@ public class UpcomingTripsActivity extends AppCompatActivity {
     AlertDialog dialog;
 
     private InternetConnection internetConnection;
-
     DrawerLayout coordinatorLayout;
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,9 +110,10 @@ public class UpcomingTripsActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_sync, R.id.nav_logout,R.id.nav_report)
+                R.id.nav_home, R.id.nav_history, R.id.nav_report)
                 .setDrawerLayout(drawer)
                 .build();
+
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
@@ -152,15 +151,7 @@ public class UpcomingTripsActivity extends AppCompatActivity {
 
 
                     return true;
-                }
 
-                else if (menuItem.getItemId() == R.id.nav_sync) {
-                    navController.navigate(R.id.action_nav_home_to_nav_sync);
-                    drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-
-                    
-
-                    return true;
                 } else if (menuItem.getItemId() == R.id.nav_logout) {
                     Log.i("TAG", "onNavigationItemSelected: hhhhhhhhhhhhhhh");
                     Log.i("TAG", "logoutt"+FirebaseAuth.getInstance().getCurrentUser());
@@ -191,12 +182,13 @@ public class UpcomingTripsActivity extends AppCompatActivity {
                 } else if (menuItem.getItemId() == R.id.nav_home) {
                     //Navigation here
 
+                    navController.navigate(R.id.nav_home);
                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                     return true;
                 } else if (menuItem.getItemId() == R.id.nav_history) {
                     //Navigation here
                     //fab.hide();
-                    navController.navigate(R.id.action_HomeFragment_to_History);
+                    navController.navigate(R.id.nav_history);
                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                     return true;
                 }
