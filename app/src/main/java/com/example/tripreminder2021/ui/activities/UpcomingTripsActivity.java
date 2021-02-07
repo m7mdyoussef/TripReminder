@@ -96,10 +96,13 @@ public class UpcomingTripsActivity extends AppCompatActivity {
                 BaseTransientBottomBar.LENGTH_INDEFINITE);
         internetConnection.observe(this,aBoolean -> {
 
-            if (!aBoolean)
+            if (!aBoolean) {
                 snackBar.show();
-            else
+                //fab.hide();
+            }else {
                 snackBar.dismiss();
+                //fab.show();
+            }
         });
 
         View header=navigationView.getHeaderView(0);
@@ -114,10 +117,10 @@ public class UpcomingTripsActivity extends AppCompatActivity {
                 .setDrawerLayout(drawer)
                 .build();
 
-
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(toolbar, navController, mAppBarConfiguration);
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -177,23 +180,24 @@ public class UpcomingTripsActivity extends AppCompatActivity {
                     alertDialog.show();
 
 
-
                     return true;
                 } else if (menuItem.getItemId() == R.id.nav_home) {
                     //Navigation here
 
+                    fab.show();
                     navController.navigate(R.id.nav_home);
                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                     return true;
                 } else if (menuItem.getItemId() == R.id.nav_history) {
                     //Navigation here
-                    //fab.hide();
+                    fab.hide();
                     navController.navigate(R.id.nav_history);
                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                     return true;
                 }
                 else if(menuItem.getItemId()==R.id.nav_report)
                 {
+                    fab.hide();
                     navController.navigate(R.id.nav_report);
                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                     return true;
@@ -243,7 +247,6 @@ public class UpcomingTripsActivity extends AppCompatActivity {
 
         return true;
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {
