@@ -3,8 +3,7 @@ package com.example.tripreminder2021.pojo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,6 +24,7 @@ public class TripModel implements Parcelable,Serializable{
         trip_id = in.readString();
         include_in = in.readString();
         notes = in.createStringArrayList();
+        randomNumber =in.readInt();
     }
 
     public static final Creator<TripModel> CREATOR = new Creator<TripModel>() {
@@ -48,7 +48,15 @@ public class TripModel implements Parcelable,Serializable{
     }
 
     public String startloc,endloc,date,time,status,tripname,dateTime;
+public int randomNumber;
 
+    public int getRandomNumber() {
+        return randomNumber;
+    }
+
+    public void setRandomNumber(int randomNumber) {
+        this.randomNumber = randomNumber;
+    }
 
     private String trip_id;
     private String include_in;
@@ -80,9 +88,9 @@ public class TripModel implements Parcelable,Serializable{
         this.notes = notes;
     }
 
-    public TripModel(String trip_id,String startloc, String endloc, String date,
+    public TripModel(int randomNumber, String trip_id, String startloc, String endloc, String date,
                      String time, String tripname, String status,
-                     List<String> notes, String dateTime,String include_in) {
+                     List<String> notes, String dateTime, String include_in) {
 
         this.trip_id=trip_id;
         this.startloc = startloc;
@@ -95,6 +103,7 @@ public class TripModel implements Parcelable,Serializable{
         this.notes = notes;
         this.dateTime = dateTime;
         this.include_in = include_in;
+        this.randomNumber = randomNumber;
     }
     public TripModel(String startloc, String endloc, String date, String time, String tripname, String status, List<String> notes) {
         this.startloc = startloc;

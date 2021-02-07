@@ -1,38 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_add_Btn_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="16dp"
-    android:id="@+id/activity_add_Btn_layout"
+    android:layout_marginTop="0dp"
+
+    android:background="@mipmap/new_back"
     tools:context=".ui.activities.AddBtnActivity">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
 
-        style="?android:attr/progressBarStyle"
-        android:layout_width="3dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/add_trip_btn"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/login_button"
         android:requiresFadingEdge="horizontal|vertical"
         android:text="@string/add_trip"
         android:textColor="@color/white"
         android:textSize="8pt"
-        android:layout_marginBottom="15dp"
         app:icon="@drawable/ic_note_add_24px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,12 +36,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="108dp"
         android:layout_marginLeft="108dp"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/login_button"
         android:requiresFadingEdge="horizontal|vertical"
         android:text="@string/cancel"
         android:textColor="@color/white"
         android:textSize="8pt"
-        android:layout_marginBottom="15dp"
         app:icon="@drawable/ic_note_add_24px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/add_trip_btn"
@@ -60,9 +50,12 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_marginBottom="48dp"
-
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/add_trip_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -74,20 +67,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:orientation="horizontal"
-                android:weightSum="2"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
                 <Spinner
-                    android:id="@+id/repeat_spinner"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1" />
-
-                <Spinner
                     android:id="@+id/trip_way_spinner"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:layout_weight="1" />
+                    android:textColor="#ffffff"
+                    android:textColorHint="#ffffff" />
 
 
             </LinearLayout>
@@ -106,8 +93,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="8dp"
-                    android:orientation="horizontal"
-                    android:layout_marginRight="8dp">
+                    android:layout_marginRight="8dp"
+                    android:orientation="horizontal">
 
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -117,13 +104,17 @@
                         android:layout_marginHorizontal="8dp"
                         android:layout_weight="1"
                         android:hint="@string/add_a_note"
+                        android:textColor="#ffffff"
+                        android:textColorHint="#ffffff"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:startIconContentDescription="Pick Date">
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
                     </com.google.android.material.textfield.TextInputLayout>
+
                     <ImageButton
                         android:id="@+id/add_note_btn"
                         android:layout_width="0dp"
@@ -152,6 +143,8 @@
                     android:layout_marginTop="24dp"
                     android:layout_weight="1"
                     android:hint="@string/date"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#ffffff"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout"
@@ -165,6 +158,7 @@
                         android:editable="false"
                         android:focusable="false"
 
+
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -176,7 +170,8 @@
                     android:layout_marginTop="24dp"
                     android:layout_weight="1"
                     android:hint="@string/time"
-
+                    android:textColor="#ffffff"
+                    android:textColorHint="#ffffff"
                     app:startIconContentDescription="Pick Date"
                     app:startIconDrawable="@drawable/ic_schedule_24px">
 
@@ -191,20 +186,14 @@
             </LinearLayout>
 
 
-
-
-
-
-
             <LinearLayout
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="2"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
                 app:layout_constraintBottom_toTopOf="@+id/repeat_spin_linearlayout"
-                >
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -216,13 +205,14 @@
                     android:layout_marginTop="24dp"
                     android:layout_weight="1"
                     android:hint="@string/date"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#ffffff"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/autoCompleteTVDestination"
                     app:startIconContentDescription="Pick Date"
-                    app:startIconDrawable="@drawable/ic_date_range_24px"
-                    android:visibility="gone"
-                    >
+                    app:startIconDrawable="@drawable/ic_date_range_24px">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/dateEdit_back"
@@ -243,11 +233,11 @@
                     android:layout_marginTop="24dp"
                     android:layout_weight="1"
                     android:hint="@string/time"
-
-                    app:startIconContentDescription="Pick Date"
-                    app:startIconDrawable="@drawable/ic_schedule_24px"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#ffffff"
                     android:visibility="gone"
-                    >
+                    app:startIconContentDescription="Pick Date"
+                    app:startIconDrawable="@drawable/ic_schedule_24px">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/clockEdit_back"
@@ -260,24 +250,6 @@
             </LinearLayout>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <TextView
                 android:id="@+id/dummytv"
                 android:layout_width="match_parent"
@@ -285,6 +257,8 @@
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/start_point"
+                android:textColor="#ffffff"
+                android:textColorHint="#ffffff"
                 android:textSize="6pt"
                 app:layout_constraintTop_toBottomOf="@+id/trip_name_text_field" />
 
@@ -294,6 +268,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:text="@string/destination"
+                android:textColor="#ffffff"
+                android:textColorHint="#ffffff"
                 android:textSize="6pt"
                 app:layout_constraintTop_toBottomOf="@+id/start_autoComplete_Frag" />
 
@@ -303,7 +279,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:hint="@string/trip_name"
-
+                android:textColor="#ffffff"
+                android:textColorHint="#ffffff"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -320,6 +297,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
+                android:textColor="#ffffff"
+                android:textColorHint="#ffffff"
                 app:layout_constraintTop_toBottomOf="@+id/dummytv"
                 tools:layout_editor_absoluteX="8dp" />
 
@@ -329,6 +308,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
+                android:textColor="#ffffff"
+                android:textColorHint="#ffffff"
                 app:layout_constraintTop_toBottomOf="@+id/dummytv2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

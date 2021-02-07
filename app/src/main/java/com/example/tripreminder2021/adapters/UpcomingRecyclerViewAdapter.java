@@ -1,7 +1,9 @@
 package com.example.tripreminder2021.adapters;
 
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -31,6 +33,7 @@ import com.example.tripreminder2021.pojo.TripModel;
 import com.example.tripreminder2021.pojo.TripStatus;
 import com.example.tripreminder2021.repository.FirebaseDatabaseServices;
 import com.example.tripreminder2021.ui.activities.AddBtnActivity;
+import com.example.tripreminder2021.zService.AlarmEventReciever;
 import com.example.tripreminder2021.zService.FloatingWindowService;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -120,15 +123,45 @@ int increasedID=0;
 
                     case R.id.action_upcoming_edit_trip:
 
+                        AlarmManager alarmManager3 = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                        Intent myIntent3 = new Intent(context, AlarmEventReciever.class);
+                        PendingIntent pendingIntent3 = PendingIntent.getBroadcast(
+                                context, currentTrip.getRandomNumber(), myIntent3, PendingIntent.FLAG_UPDATE_CURRENT);
+                        if (alarmManager3 != null) {
+                            alarmManager3.cancel(pendingIntent3);
+                        }
+                        pendingIntent3.cancel();
+
                         editTrip(currentTrip);
                         return true;
 
                     case R.id.action_upcoming_cancel_trip:
 
+
+
+                        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                        Intent myIntent = new Intent(context, AlarmEventReciever.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                                context, currentTrip.getRandomNumber(), myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        if (alarmManager != null) {
+                            alarmManager.cancel(pendingIntent);
+                        }
+                        pendingIntent.cancel();
+
+
                         firebaseDatabaseServices.changeTripStatus(currentTrip.getTrip_id(), TripStatus.Canceled);
                         return true;
 
                     case R.id.action_upcoming_delete_trip:
+
+                        AlarmManager alarmManager2 = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                        Intent myIntent2 = new Intent(context, AlarmEventReciever.class);
+                        PendingIntent pendingIntent2 = PendingIntent.getBroadcast(
+                                context, currentTrip.getRandomNumber(), myIntent2, PendingIntent.FLAG_UPDATE_CURRENT);
+                        if (alarmManager2 != null) {
+                            alarmManager2.cancel(pendingIntent2);
+                        }
+                        pendingIntent2.cancel();
 
                         showDeleteAlertDialog(currentTrip.getTrip_id());
                         return true;
@@ -140,6 +173,9 @@ int increasedID=0;
         });
         popup.show();
     }
+
+
+
 
     private void addNoteScenario(TripModel currentTrip) {
 
