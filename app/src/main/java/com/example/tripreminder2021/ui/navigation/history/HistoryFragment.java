@@ -42,6 +42,7 @@ public class HistoryFragment extends Fragment {
     private InternetConnection internetConnection;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         historyViewModel= ViewModelProviders.of(this).get(HistoryViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_history, container, false);

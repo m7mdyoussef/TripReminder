@@ -88,7 +88,7 @@ public class UpcomingRepository {
                 {
                     allTrips.clear();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        allTrips.add(dataSnapshot.getValue(TripModel.class));
+                       allTrips.add(dataSnapshot.getValue(TripModel.class));
                     }
                     trips.postValue(allTrips);
                 }

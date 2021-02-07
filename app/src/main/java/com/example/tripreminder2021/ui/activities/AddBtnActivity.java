@@ -64,14 +64,13 @@ import butterknife.OnClick;
 public class AddBtnActivity extends AppCompatActivity {
     public static final String NEW_TRIP_OBJECT = "NEW_TRIP_OBJECT";
     public static final String NEW_TRIP_OBJ_SERIAL = "NEW_TRIP_OBJECT";
-    public int hours2 = 2;
-    public int minutes2;
+
+
     @BindView(R.id.add_trip_btn)
     Button addTripBtn;
     @BindView(R.id.cancel_btn)
     Button cancelBtn;
-    @BindView(R.id.repeat_spinner)
-    Spinner repeatSpinner;
+
     @BindView(R.id.trip_way_spinner)
     Spinner tripWaySpinner;
     @BindView(R.id.repeat_spin_linearlayout)
@@ -90,8 +89,6 @@ public class AddBtnActivity extends AppCompatActivity {
     LinearLayout linearLayout;
     @BindView(R.id.trip_name_text_field)
     TextInputLayout tripNameTextField;
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
     @BindView(R.id.dateEdit_back)
     TextInputEditText dateEdit_back;
     @BindView(R.id.clockEdit_back)
@@ -102,18 +99,15 @@ public class AddBtnActivity extends AppCompatActivity {
     TextInputLayout TextInputDate2;
     PlacesClient mPlacesClient;
     List<Place.Field> placeField = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS);
-    int hour;
-    int minutes;
-    int years2;
-    int months2;
-    int days2;
+     int hours,hours2,minutes, minutes2,years,years2,months,months2,days2,days;
+
     int increasedID = 0;
     int SigleRoundposition = 0;
     ArrayAdapter<CharSequence> adapterTripDirectionSpin;
     ArrayAdapter<CharSequence> adapterTripRepeatSpin;
     List<TextInputLayout> mNotesTextInputLayout = new ArrayList<>();
-    String selectedStartPlace = "";
-    String selectedEndPlace = "";
+    String selectedStartPlace ;
+    String selectedEndPlace ;
     List<String> notesList = new ArrayList<>();
 
     AlarmManager alarmManager;
@@ -125,7 +119,8 @@ public class AddBtnActivity extends AppCompatActivity {
     Calendar myCalendarRound;
     Calendar currentCalendar;
     private FirebaseDatabaseServices firebaseDatabaseServices;
-
+    AutocompleteSupportFragment placeStartPointAutoComplete;
+    AutocompleteSupportFragment placeDestPointAutoComplete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,11 +163,11 @@ public class AddBtnActivity extends AppCompatActivity {
         timeTextField.setText(trip.getTime());
         //tripNameTextField.getEditText().setText(trip.getNotes());
         addTripBtn.setText(R.string.update);
+       
     }
 
     private void setUpAutoComplete() {
-        AutocompleteSupportFragment placeStartPointAutoComplete;
-        AutocompleteSupportFragment placeDestPointAutoComplete;
+
         if (!Places.isInitialized()) {
             // @TODO Get Places API key
 
@@ -191,28 +186,24 @@ public class AddBtnActivity extends AppCompatActivity {
         placeStartPointAutoComplete.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
                 Log.i("Places", "Place: " + place.getAddress() + ", " + place.getId());
                 selectedStartPlace = place.getAddress();
             }
 
             @Override
             public void onError(Status status) {
-                // TODO: Handle the error.
                 Log.i("Places", "An error occurred: " + status);
             }
         });
         placeDestPointAutoComplete.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
                 Log.i("Places", "Place: " + place.getAddress() + ", " + place.getId());
                 selectedEndPlace = place.getAddress();
             }
 
             @Override
             public void onError(Status status) {
-                // TODO: Handle the error.
                 Log.i("Places", "An error occurred: " + status);
             }
         });
@@ -226,7 +217,7 @@ public class AddBtnActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.add_trip_btn:
 
-                //@TODO Copy this to another place !
+
                 for (TextInputLayout txtLayout : mNotesTextInputLayout) {
                     Log.i("Notes List", txtLayout.getEditText().getText().toString());
                     notesList.add(txtLayout.getEditText().getText().toString());
@@ -237,13 +228,20 @@ public class AddBtnActivity extends AppCompatActivity {
                     dateTextField.setError("Cannot be blank!");
                 } else if (timeTextField.getText().toString().equals("")) {
                     timeTextField.setError("Cannot be blank!");
-                } else {
+                } else if(selectedStartPlace ==null || selectedEndPlace ==null){
+                    Toast.makeText(getApplicationContext(), "Location cannot be empty", Toast.LENGTH_LONG).show();
+                    return;
+                 } else {
 
                     if (SigleRoundposition == 0) {
                         dateEdit_back.setVisibility(View.GONE);
                         clockEdit_back.setVisibility(View.GONE);
 
-                        TripModel newTrip = new TripModel("1",selectedStartPlace, selectedEndPlace,
+
+                        Random random = new Random();
+                        int i = random.nextInt((1000000000 - 1) + 1) + 1;
+
+                        TripModel newTrip = new TripModel(i,"1",selectedStartPlace, selectedEndPlace,
                                 dateTextField.getText().toString(),
                                 timeTextField.getText().toString(),
                                 tripNameTextField.getEditText().getText().toString()
@@ -251,7 +249,6 @@ public class AddBtnActivity extends AppCompatActivity {
                                 Constants.SEARCH_CHILD_UPCOMING_KEY);
 
 
-                        Log.i("TAG", "onViewClicked:111 "+addTripBtn.getText().toString());
                         if(addTripBtn.getText().toString()==getString(R.string.update))
                             firebaseDatabaseServices.deleteTrip(oldTrip.getTrip_id());
                         firebaseDatabaseServices.addTrip(newTrip);
@@ -260,8 +257,12 @@ public class AddBtnActivity extends AppCompatActivity {
 
                         Intent resultIntent = new Intent();
                         resultIntent.putExtra("NEWTRIP", (Serializable) newTrip);
-                        startAlarm(newTrip);
+                        startAlarm(newTrip,i);
                         setResult(Activity.RESULT_OK, resultIntent);
+
+                        Toast.makeText(this, " "+i, Toast.LENGTH_SHORT).show();
+
+
                         Toast.makeText(this, "Added Successfully", Toast.LENGTH_SHORT).show();
                         finish();
 
@@ -273,7 +274,10 @@ public class AddBtnActivity extends AppCompatActivity {
                             Toast.makeText(AddBtnActivity.this, "cannot return before going", Toast.LENGTH_SHORT).show();
                         } else {
 
-                            TripModel newTrip = new TripModel("1",selectedStartPlace, selectedEndPlace,
+
+                            Random random2 = new Random();
+                            int j = random2.nextInt((1000000000 - 1) + 1) + 1;
+                            TripModel newTrip = new TripModel(j,"1",selectedStartPlace, selectedEndPlace,
                                     dateTextField.getText().toString(),
                                     timeTextField.getText().toString(),
                                     tripNameTextField.getEditText().getText().toString()+ " Going"
@@ -288,12 +292,14 @@ public class AddBtnActivity extends AppCompatActivity {
 
                             Intent resultIntent = new Intent();
                                 resultIntent.putExtra("NEWTRIP", (Serializable) newTrip);
-                                startAlarm(newTrip);
+                                startAlarm(newTrip,j);
                                 setResult(Activity.RESULT_OK, resultIntent);
 
 
 
-                            TripModel TripBack = new TripModel("2",selectedEndPlace, selectedStartPlace,
+                            Random random3 = new Random();
+                            int k = random3.nextInt((1000000000 - 1) + 1) + 1;
+                            TripModel TripBack = new TripModel(k,"2",selectedEndPlace, selectedStartPlace,
                                     dateEdit_back.getText().toString(),
                                     clockEdit_back.getText().toString(),
                                     tripNameTextField.getEditText().getText().toString()+ " Back"
@@ -301,18 +307,18 @@ public class AddBtnActivity extends AppCompatActivity {
                                     Constants.SEARCH_CHILD_UPCOMING_KEY);
 
 
-                            Log.i("TAG", "onViewClicked:333 "+addTripBtn.getText().toString());
 
                             if(addTripBtn.getText().toString()==getString(R.string.update))
                                 firebaseDatabaseServices.deleteTrip(oldTrip.getTrip_id());
-                            firebaseDatabaseServices.addTrip(newTrip);
+                            firebaseDatabaseServices.addTrip(TripBack);
 
 
                             Intent resultIntentback = new Intent();
                             resultIntentback.putExtra("TripBack", (Serializable) TripBack);
-                            startAlarmBack(TripBack);
+                            startAlarmBack(TripBack,k);
                             setResult(Activity.RESULT_OK, resultIntentback);
 
+                            Toast.makeText(this, ""+j+"//"+k, Toast.LENGTH_LONG).show();
 
                             Toast.makeText(this, "Added Successfully", Toast.LENGTH_SHORT).show();
                             finish();
@@ -328,22 +334,18 @@ public class AddBtnActivity extends AppCompatActivity {
                 generateNoteLayout(view);
                 break;
             case R.id.dateTextField:
-                final DatePickerDialog.OnDateSetListener date2 = new DatePickerDialog.OnDateSetListener() {
+                final DatePickerDialog.OnDateSetListener date2 = (view12, year, monthOfYear, dayOfMonth) -> {
+                    years = year;
+                    months = monthOfYear;
+                    days = dayOfMonth;
+                    mCalendar.set(Calendar.YEAR, year);
+                    mCalendar.set(Calendar.MONTH, monthOfYear);
+                    mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                          int dayOfMonth) {
-                        // TODO Auto-generated method stub
+                    // String myFormat = DateFormat.getDateInstance(DateFormat.FULL).format(myCalendarRound.getTime());
+                    ; //In which you need put here
+                    dateTextField.setText(dayOfMonth+"-"+(monthOfYear + 1)+"-"+ year);
 
-                        mCalendar.set(Calendar.YEAR, year);
-                        mCalendar.set(Calendar.MONTH, monthOfYear);
-                        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-                        // String myFormat = DateFormat.getDateInstance(DateFormat.FULL).format(myCalendarRound.getTime());
-                        ; //In which you need put here
-                        dateTextField.setText(dayOfMonth+"-"+(monthOfYear + 1)+"-"+ year);
-
-                    }
                 };
                 new DatePickerDialog(AddBtnActivity.this, date2, mCalendar
                         .get(Calendar.YEAR), mCalendar.get(Calendar.MONTH),
@@ -356,40 +358,36 @@ public class AddBtnActivity extends AppCompatActivity {
                 int hour = mcurrentTime3.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime3.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker3;
-                mTimePicker3 = new TimePickerDialog(AddBtnActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                mTimePicker3 = new TimePickerDialog(AddBtnActivity.this, (timePicker, selectedHour, selectedMinute) -> {
 
-                        hours2 = selectedHour;
-                        minutes2 = selectedMinute;
-                        String timeSet2 = "";
-                        if (hours2 > 12) {
-                            hours2 -= 12;
-                            timeSet2 = "PM";
-                        } else if (hours2 == 0) {
-                            hours2 += 12;
-                            timeSet2 = "AM";
-                        } else if (hours2 == 12) {
-                            timeSet2 = "PM";
-                        } else {
-                            timeSet2 = "AM";
-                        }
-
-                        String min2 = "";
-                        if (minutes2 < 10)
-                            min2 = "0" + minutes2;
-                        else
-                            min2 = String.valueOf(minutes2);
-
-                        // Append in a StringBuilder
-                        String aTime2 = new StringBuilder().append(hours2).append(':')
-                                .append(min2).append(" ").append(timeSet2).toString();
-                        timeTextField.setText(aTime2);
-                        mCalendar.set(Calendar.HOUR_OF_DAY, selectedHour);
-                        mCalendar.set(Calendar.MINUTE, selectedMinute - 1);
-                        mCalendar.set(Calendar.SECOND, 59);
+                    hours = selectedHour;
+                    minutes = selectedMinute;
+                    String timeSet = "";
+                    if (hours > 12) {
+                        hours -= 12;
+                        timeSet = "PM";
+                    } else if (hours == 0) {
+                        hours += 12;
+                        timeSet = "AM";
+                    } else if (hours == 12) {
+                        timeSet = "PM";
+                    } else {
+                        timeSet = "AM";
                     }
+
+                    String min = "";
+                    if (minutes < 10)
+                        min = "0" + minutes;
+                    else
+                        min = String.valueOf(minutes);
+
+                    // Append in a StringBuilder
+                    String aTime = new StringBuilder().append(hours).append(':')
+                            .append(min).append(" ").append(timeSet).toString();
+                    timeTextField.setText(aTime);
+                    mCalendar.set(Calendar.HOUR_OF_DAY, selectedHour);
+                    mCalendar.set(Calendar.MINUTE, selectedMinute - 1);
+                    mCalendar.set(Calendar.SECOND, 59);
                 }, hour, minute, false);
                 mTimePicker3.setTitle("Select Time");
                 mTimePicker3.show();
@@ -399,24 +397,18 @@ public class AddBtnActivity extends AppCompatActivity {
 
             case R.id.dateEdit_back:
                 //////////////////////////////// round picker ///////////////////////////////////////
-                final DatePickerDialog.OnDateSetListener date1 = new DatePickerDialog.OnDateSetListener() {
+                final DatePickerDialog.OnDateSetListener date1 = (view1, year, monthOfYear, dayOfMonth) -> {
+                    years2 = year;
+                    months2 = monthOfYear;
+                    days2 = dayOfMonth;
+                    myCalendarRound.set(Calendar.YEAR, year);
+                    myCalendarRound.set(Calendar.MONTH, monthOfYear);
+                    myCalendarRound.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                          int dayOfMonth) {
-                        // TODO Auto-generated method stub
-                        years2 = year;
-                        months2 = monthOfYear;
-                        days2 = dayOfMonth;
-                        myCalendarRound.set(Calendar.YEAR, year);
-                        myCalendarRound.set(Calendar.MONTH, monthOfYear);
-                        myCalendarRound.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                   // String myFormat = DateFormat.getDateInstance(DateFormat.FULL).format(myCalendarRound.getTime());
+                    ; //In which you need put here
+                    dateEdit_back.setText(dayOfMonth+"-"+(monthOfYear + 1)+"-"+ year);
 
-                       // String myFormat = DateFormat.getDateInstance(DateFormat.FULL).format(myCalendarRound.getTime());
-                        ; //In which you need put here
-                        dateEdit_back.setText(dayOfMonth+"-"+(monthOfYear + 1)+"-"+ year);
-
-                    }
                 };
                 new DatePickerDialog(AddBtnActivity.this, date1, myCalendarRound
                         .get(Calendar.YEAR), myCalendarRound.get(Calendar.MONTH),
@@ -430,40 +422,36 @@ public class AddBtnActivity extends AppCompatActivity {
                 int hour2 = mcurrentTime2.get(Calendar.HOUR_OF_DAY);
                 int minute2 = mcurrentTime2.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker2;
-                mTimePicker2 = new TimePickerDialog(AddBtnActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                mTimePicker2 = new TimePickerDialog(AddBtnActivity.this, (timePicker, selectedHour, selectedMinute) -> {
 
-                        hours2 = selectedHour;
-                        minutes2 = selectedMinute;
-                        String timeSet2 = "";
-                        if (hours2 > 12) {
-                            hours2 -= 12;
-                            timeSet2 = "PM";
-                        } else if (hours2 == 0) {
-                            hours2 += 12;
-                            timeSet2 = "AM";
-                        } else if (hours2 == 12) {
-                            timeSet2 = "PM";
-                        } else {
-                            timeSet2 = "AM";
-                        }
-
-                        String min2 = "";
-                        if (minutes2 < 10)
-                            min2 = "0" + minutes2;
-                        else
-                            min2 = String.valueOf(minutes2);
-
-                        // Append in a StringBuilder
-                        String aTime2 = new StringBuilder().append(hours2).append(':')
-                                .append(min2).append(" ").append(timeSet2).toString();
-                        clockEdit_back.setText(aTime2);
-                        myCalendarRound.set(Calendar.HOUR_OF_DAY, selectedHour);
-                        myCalendarRound.set(Calendar.MINUTE, selectedMinute - 1);
-                        myCalendarRound.set(Calendar.SECOND, 59);
+                    hours2 = selectedHour;
+                    minutes2 = selectedMinute;
+                    String timeSet2 = "";
+                    if (hours2 > 12) {
+                        hours2 -= 12;
+                        timeSet2 = "PM";
+                    } else if (hours2 == 0) {
+                        hours2 += 12;
+                        timeSet2 = "AM";
+                    } else if (hours2 == 12) {
+                        timeSet2 = "PM";
+                    } else {
+                        timeSet2 = "AM";
                     }
+
+                    String min2 = "";
+                    if (minutes2 < 10)
+                        min2 = "0" + minutes2;
+                    else
+                        min2 = String.valueOf(minutes2);
+
+                    // Append in a StringBuilder
+                    String aTime2 = new StringBuilder().append(hours2).append(':')
+                            .append(min2).append(" ").append(timeSet2).toString();
+                    clockEdit_back.setText(aTime2);
+                    myCalendarRound.set(Calendar.HOUR_OF_DAY, selectedHour);
+                    myCalendarRound.set(Calendar.MINUTE, selectedMinute - 1);
+                    myCalendarRound.set(Calendar.SECOND, 59);
                 }, hour2, minute2, false);
                 mTimePicker2.setTitle("Select Time");
                 mTimePicker2.show();
@@ -514,24 +502,24 @@ public class AddBtnActivity extends AppCompatActivity {
             }
         });
 
-        //Trip Repeat Spinner
-        adapterTripRepeatSpin = ArrayAdapter.createFromResource(this,
-                R.array.times_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapterTripRepeatSpin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        repeatSpinner.setAdapter(adapterTripRepeatSpin);
-        repeatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                Log.i("Spinner", adapterView.getItemAtPosition(pos).toString() + "");
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+//        //Trip Repeat Spinner
+//        adapterTripRepeatSpin = ArrayAdapter.createFromResource(this,
+//                R.array.times_array, android.R.layout.simple_spinner_item);
+//        // Specify the layout to use when the list of choices appears
+//        adapterTripRepeatSpin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        // Apply the adapter to the spinner
+//        repeatSpinner.setAdapter(adapterTripRepeatSpin);
+//        repeatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+//                Log.i("Spinner", adapterView.getItemAtPosition(pos).toString() + "");
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
     }
 
     private void generateNoteLayout(View view) {
@@ -554,10 +542,9 @@ public class AddBtnActivity extends AppCompatActivity {
 
     }
 
-    private void startAlarm(TripModel tripModel) {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void startAlarm(TripModel tripModel, int tripId) {
 
-        Random random = new Random();
-        int i = random.nextInt((1000 - 1) + 1) + 1;
         alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
 
         Intent intent = new Intent(this, AlarmEventReciever.class);
@@ -566,20 +553,18 @@ public class AddBtnActivity extends AppCompatActivity {
         intent.putExtra(NEW_TRIP_OBJECT, b);
 
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, i , intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, tripId , intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
         else
-        alarmManager.set(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
 
         Toast.makeText(this, DateFormat.getDateTimeInstance().format(mCalendar.getTime()), Toast.LENGTH_LONG).show();
     }
 
-    private void startAlarmBack(TripModel tripModel) {
-        Random random2 = new Random();
-        int j = random2.nextInt((1000 - 1) + 1) + 1;
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void startAlarmBack(TripModel tripModel, int tripId) {
 
        AlarmManager alarmManager2 = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
 
@@ -589,14 +574,14 @@ public class AddBtnActivity extends AppCompatActivity {
         intent.putExtra(NEW_TRIP_OBJECT, b);
 
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, j , intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, tripId , intent, PendingIntent.FLAG_UPDATE_CURRENT);
         if (alarmManager2 != null) {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
 
             alarmManager2.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, myCalendarRound.getTimeInMillis(), pendingIntent);
 
         else
-            alarmManager2.set(AlarmManager.RTC_WAKEUP, myCalendarRound.getTimeInMillis(), pendingIntent);
+            alarmManager2.setExact(AlarmManager.RTC_WAKEUP, myCalendarRound.getTimeInMillis(), pendingIntent);
 
         }
 
