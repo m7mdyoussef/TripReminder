@@ -104,9 +104,7 @@ public class ReportFragment extends Fragment {
                     arr=getDoneCancelSize(list);
                     distance=getAverageDistance(list);
                     time=getTime(list);
-
                     relativeLayoutReport.setVisibility(View.VISIBLE);
-
                     total_trips.setText(list.size()+" ");
                     total_canceled_trips.setText(arr[1]+" ");
                     total_done_trips.setText(arr[0]+" ");

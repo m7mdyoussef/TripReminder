@@ -51,16 +51,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
-        Trips = (ArrayList<TripModel>) args.getSerializable("LIST");
 
-        if (Trips.size() > 0 || Trips != null) {
-            for (int i = 0; i < Trips.size(); i++) {
-                EndPoints.add(Trips.get(i).getEndloc());
-                StartPoints.add(Trips.get(i).getStartloc());
-            }
-            mapFragment.getMapAsync(this);
-        } else
-            Toast.makeText(this, "empty", Toast.LENGTH_SHORT).show();
+        if(args != null)
+        {
+            Trips= (ArrayList<TripModel>) args.getSerializable("LIST");
+
+            if (Trips.size() > 0 || Trips != null) {
+                for (int i = 0; i < Trips.size(); i++) {
+                    EndPoints.add(Trips.get(i).getEndloc());
+                    StartPoints.add(Trips.get(i).getStartloc());
+                }
+                mapFragment.getMapAsync(this);
+            } else
+                Toast.makeText(this, "empty", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
