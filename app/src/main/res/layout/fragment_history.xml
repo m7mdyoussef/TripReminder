@@ -8,6 +8,25 @@
     tools:context=".ui.navigation.history.HistoryFragment">
 
 
+
+
+    <TextView
+        android:id="@+id/text_no_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:textColor="#000"
+        android:textSize="30dp"
+        android:textDirection="locale"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:text="@string/no_history_trip_available"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <ProgressBar
         android:id="@+id/history_progress"
         style="?android:attr/progressBarStyleLarge"

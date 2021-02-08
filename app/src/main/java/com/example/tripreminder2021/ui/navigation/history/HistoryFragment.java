@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -41,6 +42,7 @@ public class HistoryFragment extends Fragment {
     private ArrayList<TripModel> myList=new ArrayList<>();
     private ProgressBar progressBar;
     private InternetConnection internetConnection;
+    private TextView textView;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -50,6 +52,7 @@ public class HistoryFragment extends Fragment {
 
         internetConnection=new InternetConnection(getContext());
         recyclerView = root.findViewById(R.id.recycler);
+        textView = root.findViewById(R.id.text_no_history);
         btn_draw_maps = root.findViewById(R.id.draw_map);
         progressBar=root.findViewById(R.id.history_progress);
         progressBar.setVisibility(View.VISIBLE);
@@ -58,9 +61,27 @@ public class HistoryFragment extends Fragment {
 
         internetConnection.observe(getViewLifecycleOwner(),aBoolean -> {
             if (aBoolean)
+            {
                 btn_draw_maps.setVisibility(View.VISIBLE);
+                historyViewModel.getHistoryTrips().observe(getViewLifecycleOwner(), list -> {
+                    if (list.size()==0) {
+                        recyclerView.setVisibility(View.GONE);
+                        textView.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        textView.setVisibility(View.GONE);
+                        recyclerViewAdapter.setData(list);
+                    }
+                    progressBar.setVisibility(View.GONE);
+                });
+            }
             else
+            {
                 btn_draw_maps.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+            }
         });
 
         historyViewModel.init();
@@ -71,9 +92,10 @@ public class HistoryFragment extends Fragment {
 
         historyViewModel.getHistoryTrips().observe(getViewLifecycleOwner(), list -> {
             recyclerViewAdapter.setData(list);
+            progressBar.setVisibility(View.GONE);
         });
-        progressBar.setVisibility(View.GONE);
 
+        progressBar.setVisibility(View.GONE);
         return root;
     }
 

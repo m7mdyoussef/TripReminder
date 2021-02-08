@@ -7,6 +7,23 @@
     android:layout_margin="10dp"
     android:id="@+id/fragmeny_home_layout">
 
+
+    <TextView
+        android:id="@+id/text_no_upcoming"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:textColor="#000"
+        android:textSize="30dp"
+        android:textDirection="locale"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:text="@string/no_upcoming_trip_available"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ProgressBar
         android:id="@+id/upcoming_progress"
         style="?android:attr/progressBarStyleLarge"
