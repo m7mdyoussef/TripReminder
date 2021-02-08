@@ -71,8 +71,12 @@
                     tools:ignore="ManifestResource" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.register.Activity_Register" />
-        <activity android:name=".ui.activities.login.Activity_Login" />
+        <activity android:name=".ui.activities.register.Activity_Register"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".ui.activities.login.Activity_Login"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".zService.MyDialogActivity"
             android:launchMode="singleInstance"
@@ -80,6 +84,7 @@
         <activity
             android:name=".ui.activities.UpcomingTripsActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.AddBtnActivity"

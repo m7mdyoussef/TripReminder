@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -26,15 +27,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class ReportFragment extends Fragment {
 
     private ReportViewModel reportViewModel;
-    private DatePickerDialog datePickerDialog;
-
-
     private TextView from,to;
 
     private ImageView start_date_picker ;
@@ -56,6 +56,9 @@ public class ReportFragment extends Fragment {
 
     private InternetConnection abc;
 
+    private Date first_date_date;
+    private Date second_date_date;
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-YYYY");
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -89,20 +92,24 @@ public class ReportFragment extends Fragment {
         show_report.setOnClickListener(v ->
             action_showReport());
 
-        reportViewModel.getReportedList(from.getText().toString(),to.getText().toString())
+        first_date_date=new Date();
+        second_date_date=new Date();
+
+        reportViewModel.getReportedList(first_date_date.getTime(),second_date_date.getTime())
                 .observe(getViewLifecycleOwner(), list -> {
+                    Log.i("TAG", "onCreateView: ddddddddddddddddddddddddddddddddddddddddddddddd");
                     int arr[]=new int[2];
                     double distance=0.0d;
                     double time=0.0d;
+                    arr=getDoneCancelSize(list);
                     distance=getAverageDistance(list);
                     time=getTime(list);
-                    arr=getDoneCancelSize(list);
 
                     relativeLayoutReport.setVisibility(View.VISIBLE);
-                    total_trips.setText(list.size()+" ");
-                    total_done_trips.setText(arr[0]+" ");
-                    total_canceled_trips.setText(arr[1]+" ");
 
+                    total_trips.setText(list.size()+" ");
+                    total_canceled_trips.setText(arr[1]+" ");
+                    total_done_trips.setText(arr[0]+" ");
                     average_distance.setText((int)distance+" "+getString(R.string.km));
                     average_time.setText((int)distance/50+" "+getString(R.string.hour));
                     progressBar.setVisibility(View.GONE);
@@ -119,32 +126,41 @@ public class ReportFragment extends Fragment {
             Toast.makeText(getContext(), "Enter The Duration First", Toast.LENGTH_SHORT).show();
         else {
             progressBar.setVisibility(View.VISIBLE);
-            trips = reportViewModel.getReportedList(start, To).getValue();
+            trips=new ArrayList<>();
+            trips = reportViewModel.getReportedList(first_date_date.getTime(),second_date_date.getTime()).getValue();
             txt_date_range1.setText(start);
             txt_date_range2.setText(To);
         }
     }
-
     private void setEndDate() {
         final Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int month = calendar.get(Calendar.MONTH);
-        int year = calendar.get(Calendar.YEAR);
-        // date picker dialog
-        datePickerDialog = new DatePickerDialog(getContext(), (view, year1, monthOfYear, dayOfMonth) ->
-                to.setText(dayOfMonth+"-"+(monthOfYear + 1)+"-"+ year1)
-                , year, month, day);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(year, month, dayOfMonth);
+                to.setText(simpleDateFormat.format(calendar.getTime()));
+                second_date_date = calendar.getTime();
+                Log.i("TAG", "onDateSet: "+second_date_date.getTime());
+            }
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
+
     }
 
     private void setStartDate() {
+
         final Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int month = calendar.get(Calendar.MONTH);
-        int year = calendar.get(Calendar.YEAR);
-        // date picker dialog
-        datePickerDialog = new DatePickerDialog(getContext(), (view, year12, monthOfYear, dayOfMonth) -> from.setText(dayOfMonth+"-"+(monthOfYear + 1)+"-"+ year12), year, month, day);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(year, month, dayOfMonth);
+                from.setText(simpleDateFormat.format(calendar.getTime()));
+                first_date_date = calendar.getTime();
+                Log.i("TAG", "onDateSet: "+first_date_date.getTime());
+            }
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
+
     }
 
     private void initViews(View root) {

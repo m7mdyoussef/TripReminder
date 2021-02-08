@@ -1,5 +1,6 @@
 package com.example.tripreminder2021.ui.activities;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -43,9 +44,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
         Trips = (ArrayList<TripModel>) args.getSerializable("LIST");

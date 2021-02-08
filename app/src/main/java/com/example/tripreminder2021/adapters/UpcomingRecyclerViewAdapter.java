@@ -42,6 +42,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.AbstractSequentialList;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,8 @@ public class UpcomingRecyclerViewAdapter extends RecyclerView.Adapter<UpcomingRe
     private ArrayList<TripModel> list;
     private Context context;
     private FirebaseDatabaseServices firebaseDatabaseServices;
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-YYYY");
+
 
     public UpcomingRecyclerViewAdapter(ArrayList<TripModel> list,Context context)
     {
@@ -72,7 +75,7 @@ public class UpcomingRecyclerViewAdapter extends RecyclerView.Adapter<UpcomingRe
         holder.startLoc.setText(currentTrip.getStartloc());
         holder.endLoc.setText(currentTrip.getEndloc());
         holder.time.setText(currentTrip.getTime());
-        holder.date.setText(String.valueOf(currentTrip.getDate()));
+        holder.date.setText(simpleDateFormat.format(currentTrip.getDate()));
         holder.startNow.setOnClickListener(v -> {
 
             firebaseDatabaseServices.addTripToHistory(currentTrip.getTrip_id());

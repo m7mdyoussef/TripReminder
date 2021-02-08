@@ -22,6 +22,7 @@ import com.example.tripreminder2021.pojo.TripModel;
 import com.example.tripreminder2021.pojo.TripStatus;
 import com.example.tripreminder2021.repository.FirebaseDatabaseServices;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
     private ArrayList<TripModel> list;
     private Context context;
     FirebaseDatabaseServices firebaseDatabaseServices;
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-YYYY");
     public HistoryRecyclerViewAdapter(Context context,ArrayList<TripModel> list)
     {
         this.context=context;
@@ -51,7 +53,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         holder.startLoc.setText(currentTrip.getStartloc());
         holder.endLoc.setText(currentTrip.getEndloc());
         holder.time.setText(currentTrip.getTime());
-        holder.date.setText(String.valueOf(currentTrip.getDate()));
+        holder.date.setText(simpleDateFormat.format(currentTrip.getDate()));
         holder.status.setText(currentTrip.getStatus());
 
         holder.popMenu.setOnClickListener(view -> showPopupMenu(holder.popMenu,currentTrip));
