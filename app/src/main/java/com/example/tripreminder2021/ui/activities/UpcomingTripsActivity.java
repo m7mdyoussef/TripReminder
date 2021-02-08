@@ -31,6 +31,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +49,7 @@ import java.util.Locale;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -102,10 +104,13 @@ public class UpcomingTripsActivity extends AppCompatActivity {
                 BaseTransientBottomBar.LENGTH_INDEFINITE);
         internetConnection.observe(this,aBoolean -> {
 
-            if (!aBoolean)
+            if (!aBoolean) {
                 snackBar.show();
-            else
+                //fab.hide();
+            }else {
                 snackBar.dismiss();
+                //fab.show();
+            }
         });
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(

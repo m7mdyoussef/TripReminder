@@ -106,12 +106,11 @@ public class Activity_Login extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         sharedPreferencesManager=new SharedPreferencesManager(this);
-        //sharedPreferencesManager.setUserLogin(false);
         if (sharedPreferencesManager.isUserLogin()) {
+            Constants.CURRENT_USER_ID=sharedPreferencesManager.getCurrentUserId();
             Intent intent = new Intent(Activity_Login.this, UpcomingTripsActivity.class);
             startActivity(intent);
             finish();
-
         }
 
         setContentView(R.layout.activity__login);
@@ -131,7 +130,6 @@ public class Activity_Login extends AppCompatActivity
         loginWithGoogle.setOnClickListener(v -> {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, 100);
-
         });
 
         // configure facebook

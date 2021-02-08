@@ -97,7 +97,7 @@ public class DatabaseRepo {
                 child("notes").
                 setValue(notes);
     }
-    public MutableLiveData<ArrayList<TripModel>> getTripsReport(String from,String to) {
+    public MutableLiveData<ArrayList<TripModel>> getTripsReport(long from,long to) {
         ArrayList<TripModel> allTripsReport=new ArrayList<>();
 
        /* try {

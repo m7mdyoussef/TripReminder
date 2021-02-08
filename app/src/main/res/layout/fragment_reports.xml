@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     tools:context=".ui.navigation.report.ReportFragment">
     <ImageView
         android:id="@+id/date_Picker_start"
@@ -93,7 +94,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none">
+            android:scrollbars="none"
+            android:layout_marginBottom="9dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -131,7 +133,7 @@
                                 android:gravity="center"
                                 android:textAppearance="?android:textAppearanceMedium"
                                 android:textColor="#000000"
-                                android:textSize="22dp"
+                                android:textSize="15dp"
                                 android:textStyle="bold"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@id/txt_date_range2"
@@ -145,7 +147,7 @@
                                 android:gravity="center"
                                 android:textAppearance="?android:textAppearanceMedium"
                                 android:textColor="#000000"
-                                android:textSize="22dp"
+                                android:textSize="15dp"
                                 android:textStyle="bold"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"

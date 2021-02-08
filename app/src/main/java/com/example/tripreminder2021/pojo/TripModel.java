@@ -16,7 +16,7 @@ public class TripModel implements Parcelable,Serializable{
     protected TripModel(Parcel in) {
         startloc = in.readString();
         endloc = in.readString();
-        date = in.readString();
+        date = in.readLong();
         time = in.readString();
         status = in.readString();
         tripname = in.readString();
@@ -47,7 +47,8 @@ public class TripModel implements Parcelable,Serializable{
         this.include_in = include_in;
     }
 
-    public String startloc,endloc,date,time,status,tripname,dateTime;
+    public String startloc,endloc,time,status,tripname,dateTime;
+    private long date;
 public int randomNumber;
 
     public int getRandomNumber() {
@@ -88,7 +89,7 @@ public int randomNumber;
         this.notes = notes;
     }
 
-    public TripModel(int randomNumber, String trip_id, String startloc, String endloc, String date,
+    public TripModel(int randomNumber, String trip_id, String startloc, String endloc, long date,
                      String time, String tripname, String status,
                      List<String> notes, String dateTime, String include_in) {
 
@@ -105,7 +106,7 @@ public int randomNumber;
         this.include_in = include_in;
         this.randomNumber = randomNumber;
     }
-    public TripModel(String startloc, String endloc, String date, String time, String tripname, String status, List<String> notes) {
+    public TripModel(String startloc, String endloc, long date, String time, String tripname, String status, List<String> notes) {
         this.startloc = startloc;
         this.endloc = endloc;
         this.date = date;
@@ -116,7 +117,7 @@ public int randomNumber;
         this.notes = notes;
 
     }
-    public TripModel(String startloc, String endloc, String date, String time, String tripname, String status) {
+    public TripModel(String startloc, String endloc, long date, String time, String tripname, String status) {
         this.startloc = startloc;
         this.endloc = endloc;
         this.date = date;
@@ -154,11 +155,11 @@ public int randomNumber;
         this.endloc = endloc;
     }
 
-    public String getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -188,7 +189,7 @@ public int randomNumber;
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(startloc);
         dest.writeString(endloc);
-        dest.writeString(date);
+        dest.writeLong(date);
         dest.writeString(time);
         dest.writeString(status);
         dest.writeString(tripname);

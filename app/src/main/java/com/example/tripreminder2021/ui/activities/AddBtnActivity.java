@@ -49,6 +49,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -122,6 +123,8 @@ public class AddBtnActivity extends AppCompatActivity {
     AutocompleteSupportFragment placeStartPointAutoComplete;
     AutocompleteSupportFragment placeDestPointAutoComplete;
 
+    private Date date_date;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,11 +160,14 @@ public class AddBtnActivity extends AppCompatActivity {
     }
 
     private void setData(TripModel trip) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-YYYY");
         tripNameTextField.getEditText().setText(trip.getTripname());
-        //selectedStartPlace..setText(trip.getStartloc());
-        dateTextField.setText(trip.getDate());
+
+        dateTextField.setText(simpleDateFormat.format(trip.getDate()));
+
         timeTextField.setText(trip.getTime());
-        //tripNameTextField.getEditText().setText(trip.getNotes());
+
+        noteTextField.getEditText().setText(trip.getNotes().get(0));
         addTripBtn.setText(R.string.update);
        
     }
@@ -242,7 +248,8 @@ public class AddBtnActivity extends AppCompatActivity {
                         int i = random.nextInt((1000000000 - 1) + 1) + 1;
 
                         TripModel newTrip = new TripModel(i,"1",selectedStartPlace, selectedEndPlace,
-                                dateTextField.getText().toString(),
+                                //dateTextField.getText().toString(),
+                                date_date.getTime(),
                                 timeTextField.getText().toString(),
                                 tripNameTextField.getEditText().getText().toString()
                                 , "start", notesList, mCalendar.getTime().toString(),
@@ -278,7 +285,8 @@ public class AddBtnActivity extends AppCompatActivity {
                             Random random2 = new Random();
                             int j = random2.nextInt((1000000000 - 1) + 1) + 1;
                             TripModel newTrip = new TripModel(j,"1",selectedStartPlace, selectedEndPlace,
-                                    dateTextField.getText().toString(),
+                                    //dateTextField.getText().toString(),
+                                    date_date.getTime(),
                                     timeTextField.getText().toString(),
                                     tripNameTextField.getEditText().getText().toString()+ " Going"
                                     , "start", notesList, mCalendar.getTime().toString(),
@@ -300,7 +308,8 @@ public class AddBtnActivity extends AppCompatActivity {
                             Random random3 = new Random();
                             int k = random3.nextInt((1000000000 - 1) + 1) + 1;
                             TripModel TripBack = new TripModel(k,"2",selectedEndPlace, selectedStartPlace,
-                                    dateEdit_back.getText().toString(),
+                                   // dateEdit_back.getText().toString(),
+                                    date_date.getTime(),
                                     clockEdit_back.getText().toString(),
                                     tripNameTextField.getEditText().getText().toString()+ " Back"
                                     , "start", notesList, myCalendarRound.getTime().toString(),
@@ -342,9 +351,15 @@ public class AddBtnActivity extends AppCompatActivity {
                     mCalendar.set(Calendar.MONTH, monthOfYear);
                     mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
+
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-YYYY");
+                    dateTextField.setText(simpleDateFormat.format(myCalendarRound.getTime()));
+                    date_date = myCalendarRound.getTime();
+
                     // String myFormat = DateFormat.getDateInstance(DateFormat.FULL).format(myCalendarRound.getTime());
                     ; //In which you need put here
-                    dateTextField.setText(dayOfMonth+"-"+(monthOfYear + 1)+"-"+ year);
+                    //dateTextField.setText(dayOfMonth+"-"+(monthOfYear + 1)+"-"+ year);
+
 
                 };
                 new DatePickerDialog(AddBtnActivity.this, date2, mCalendar
@@ -405,9 +420,9 @@ public class AddBtnActivity extends AppCompatActivity {
                     myCalendarRound.set(Calendar.MONTH, monthOfYear);
                     myCalendarRound.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                   // String myFormat = DateFormat.getDateInstance(DateFormat.FULL).format(myCalendarRound.getTime());
-                    ; //In which you need put here
-                    dateEdit_back.setText(dayOfMonth+"-"+(monthOfYear + 1)+"-"+ year);
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-YYYY");
+                    dateEdit_back.setText(simpleDateFormat.format(myCalendarRound.getTime()));
+                    date_date = myCalendarRound.getTime();
 
                 };
                 new DatePickerDialog(AddBtnActivity.this, date1, myCalendarRound

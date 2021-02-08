@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripreminder2021.*;
@@ -15,6 +16,7 @@ import com.example.tripreminder2021.adapters.UpcomingRecyclerViewAdapter;
 import com.example.tripreminder2021.pojo.TripModel;
 import com.example.tripreminder2021.pojo.TripStatus;
 import com.example.tripreminder2021.repository.FirebaseDatabaseServices;
+import com.example.tripreminder2021.requests.InternetConnection;
 import com.example.tripreminder2021.viewModels.UpcomingViewModel;
 
 import androidx.annotation.NonNull;
@@ -35,6 +37,8 @@ public class UpcomingFragment extends Fragment {
     private UpcomingViewModel upcomingViewModel;
     private ArrayList<TripModel> myList=new ArrayList<>();
     private ProgressBar progressBar;
+    private TextView textView;
+    private InternetConnection internetConnection;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,23 +49,56 @@ public class UpcomingFragment extends Fragment {
 
         recyclerView = root.findViewById(R.id.recycler);
         progressBar=root.findViewById(R.id.upcoming_progress);
+        textView=root.findViewById(R.id.text_no_upcoming);
         progressBar.setVisibility(View.VISIBLE);
+        internetConnection=new InternetConnection(getContext());
         upcomingViewModel.init();
-
-
 
         recyclerViewAdapter = new UpcomingRecyclerViewAdapter(myList,getContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(root.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
 
+        internetConnection.observe(getViewLifecycleOwner(),aBoolean -> {
+            if (aBoolean)
+            {
+                upcomingViewModel.getUpcomingTrips().observe(getViewLifecycleOwner(), new Observer<ArrayList<TripModel>>() {
+                    @Override
+                    public void onChanged(ArrayList<TripModel> list) {
+                        if (list.size()==0){
+                            recyclerView.setVisibility(View.GONE);
+                            textView.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            recyclerView.setVisibility(View.VISIBLE);
+                            textView.setVisibility(View.GONE);
+                            recyclerViewAdapter.setData(list);
+                        }
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+            }
+            else {
+                Toast.makeText(getContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+            }
+        });
         upcomingViewModel.getUpcomingTrips().observe(getViewLifecycleOwner(), new Observer<ArrayList<TripModel>>() {
             @Override
             public void onChanged(ArrayList<TripModel> list) {
-                recyclerViewAdapter.setData(list);
+                if (list.size()==0) {
+                    recyclerView.setVisibility(View.GONE);
+                    textView.setVisibility(View.VISIBLE);
+                }
+                else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    textView.setVisibility(View.GONE);
+                    recyclerViewAdapter.setData(list);
+                }
+                progressBar.setVisibility(View.GONE);
             }
         });
-        progressBar.setVisibility(View.GONE);
+
         return root;
     }
 }

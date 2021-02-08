@@ -34,7 +34,7 @@ public class FirebaseDatabaseServices {
 
         DatabaseRepo.getInstance().addTrip(trip);
     }
-    public MutableLiveData<ArrayList<TripModel>> getTripsReport(String from, String to)
+    public MutableLiveData<ArrayList<TripModel>> getTripsReport(long from, long to)
     {
 
         return DatabaseRepo.getInstance().getTripsReport(from,to);

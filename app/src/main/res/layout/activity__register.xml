@@ -3,10 +3,19 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="#bab6b6"
+    android:layout_margin="10dp"
+    android:background="@drawable/ic_back1"
     android:layout_gravity="center"
     android:id="@+id/register_coordinator_layout"
     android:padding="10dp">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/ic_back2" />
 
     <ProgressBar
         android:id="@+id/login_progress"
@@ -21,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="50dp"
         android:layout_gravity="center">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -79,7 +89,7 @@
 
         <Button
             android:id="@+id/btn_register"
-            android:layout_width="250dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="@string/register_button"
