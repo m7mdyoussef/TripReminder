@@ -48,8 +48,6 @@ public class UpcomingFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         upcomingViewModel.init();
 
-
-
         recyclerViewAdapter = new UpcomingRecyclerViewAdapter(myList,getContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(root.getContext());
         recyclerView.setLayoutManager(mLayoutManager);

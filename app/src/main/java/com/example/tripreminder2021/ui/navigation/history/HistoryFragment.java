@@ -21,6 +21,7 @@ import com.example.tripreminder2021.viewModels.HistoryViewModel;
 import com.example.tripreminder2021.viewModels.UpcomingViewModel;
 
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -72,6 +73,7 @@ public class HistoryFragment extends Fragment {
             recyclerViewAdapter.setData(list);
         });
         progressBar.setVisibility(View.GONE);
+
         return root;
     }
 

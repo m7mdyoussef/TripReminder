@@ -7,7 +7,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tripreminder2021.R
-import com.facebook.internal.Mutable
 
 
 internal class NotesRecyclerAdapter(private var noteList: MutableList<String>)

@@ -29,6 +29,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +46,7 @@ import java.util.Locale;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -153,20 +155,15 @@ public class UpcomingTripsActivity extends AppCompatActivity {
                             .create();
                     dialog.show();
 
-
-
-
                     return true;
 
                 } else if (menuItem.getItemId() == R.id.nav_logout) {
-                    Log.i("TAG", "onNavigationItemSelected: hhhhhhhhhhhhhhh");
                     Log.i("TAG", "logoutt"+FirebaseAuth.getInstance().getCurrentUser());
 
                     android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(UpcomingTripsActivity.this);
                     alertDialogBuilder.setMessage("Sure you want to  log out");
                     alertDialogBuilder.setPositiveButton("yes", (dialog, which) -> {
                         FirebaseAuth.getInstance().signOut();
-                        Log.i("TAG", "logouthhhhhhhhht"+FirebaseAuth.getInstance().getCurrentUser());
                         sharedPreferencesManager.setUserLogin(false);
                         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                         Intent mainIntent = new Intent(UpcomingTripsActivity.this, Activity_Login.class);

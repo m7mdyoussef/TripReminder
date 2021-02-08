@@ -12,14 +12,14 @@
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
 
-    <string name="slide_1_title">Title </string>
-    <string name="slide_1_desc"> Desc !</string>
+    <string name="slide_1_title">Hello Travelling</string>
+    <string name="slide_1_desc">Your Trips in one place</string>
 
-    <string name="slide_2_title">Title</string>
-    <string name="slide_2_desc">Desc !</string>
+    <string name="slide_2_title">Amazing Experience</string>
+    <string name="slide_2_desc">Organize Your Trips Scheduling , Save Your Time</string>
 
-    <string name="slide_3_title">Title </string>
-    <string name="slide_3_desc">Desc !</string>
+    <string name="slide_3_title">Always On Time</string>
+    <string name="slide_3_desc">Always Be Notified , Control Your Notifications</string>
 
     <string name="addNote">add note</string>
     <string name="add_trip">Add Trip</string>
