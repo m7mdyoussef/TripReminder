@@ -11,7 +11,6 @@
     tools:context=".ui.activities.AddBtnActivity">
 
 
-
     <Button
         android:id="@+id/add_trip_btn"
         style="@style/Widget.MaterialComponents.Button"
