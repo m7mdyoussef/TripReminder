@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -69,8 +70,7 @@ public class AddBtnActivity extends AppCompatActivity {
 
     @BindView(R.id.add_trip_btn)
     Button addTripBtn;
-    @BindView(R.id.cancel_btn)
-    Button cancelBtn;
+
 
     @BindView(R.id.trip_way_spinner)
     Spinner tripWaySpinner;
@@ -98,6 +98,9 @@ public class AddBtnActivity extends AppCompatActivity {
     TextInputLayout TextInputTime2;
     @BindView(R.id.TextInputDate2)
     TextInputLayout TextInputDate2;
+    @BindView(R.id.BackText)
+    TextView BackText;
+
     PlacesClient mPlacesClient;
     List<Place.Field> placeField = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS);
      int hours,hours2,minutes, minutes2,years,years2,months,months2,days2,days;
@@ -218,7 +221,7 @@ public class AddBtnActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @OnClick({R.id.add_trip_btn, R.id.add_note_btn, R.id.dateTextField,
-            R.id.timeTextField, R.id.cancel_btn, R.id.clockEdit_back, R.id.dateEdit_back})
+            R.id.timeTextField,  R.id.clockEdit_back, R.id.dateEdit_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.add_trip_btn:
@@ -242,6 +245,8 @@ public class AddBtnActivity extends AppCompatActivity {
                     if (SigleRoundposition == 0) {
                         dateEdit_back.setVisibility(View.GONE);
                         clockEdit_back.setVisibility(View.GONE);
+                        BackText.setVisibility(View.GONE);
+
 
 
                         Random random = new Random();
@@ -474,9 +479,7 @@ public class AddBtnActivity extends AppCompatActivity {
 
                 break;
 
-            case R.id.cancel_btn:
-                finish();
-                break;
+
         }
     }
 
@@ -502,11 +505,14 @@ public class AddBtnActivity extends AppCompatActivity {
 
                     TextInputDate2.setVisibility(View.VISIBLE);
                     TextInputTime2.setVisibility(View.VISIBLE);
+                    BackText.setVisibility(View.VISIBLE);
                 }
                 if (SigleRoundposition == 0) {
 
                     TextInputDate2.setVisibility(View.GONE);
                     TextInputTime2.setVisibility(View.GONE);
+                    BackText.setVisibility(View.GONE);
+
                 }
 
             }

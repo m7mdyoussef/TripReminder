@@ -98,6 +98,8 @@
     <string name="save_your_notes">Save</string>
     <string name="no_upcoming_trip_available">"No Upcoming Trips"</string>
     <string name="no_history_trip_available">"No History Trips"</string>
+    <string name="Going">Going</string>
+    <string name="Back">Back</string>
 
 
 </resources>

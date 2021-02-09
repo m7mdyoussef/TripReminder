@@ -24,7 +24,7 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_marginTop="8dp"
-                android:src="@drawable/messenger_bubble_large_blue" />
+                android:src="@drawable/tripplanner" />
 
             <ImageView
                 android:id="@+id/buttonClose"

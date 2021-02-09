@@ -23,19 +23,6 @@
 
     <include layout="@layout/content_upcoming_trips" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:background="@color/colorPrimary"
-        app:backgroundTint="@color/colorPrimary"
-        app:rippleColor="@color/colorPrimaryDark"
-        app:backgroundTintMode="src_in"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:elevation="6dp"
-        android:layout_margin="16dp"
-        android:tint="@color/white"
-        app:srcCompat="@drawable/ic_add_24px"
-        tools:ignore="VectorDrawableCompat" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

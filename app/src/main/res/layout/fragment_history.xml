@@ -45,6 +45,7 @@
         android:text="@string/draw_on_map"
         android:layout_margin="15dp"
         android:background="@drawable/login_button"
+        android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -95,8 +95,8 @@
             android:text="@string/register_button"
             android:layout_gravity="center"
             android:textStyle="normal|bold|italic"
-            android:background="@drawable/login_button"
-            android:theme="@android:style/Animation" />
+            android:textColor="#ffffff"
+            android:background="@color/com_facebook_button_background_color"            android:theme="@android:style/Animation" />
 
         <View
             android:layout_width="match_parent"

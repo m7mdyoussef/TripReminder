@@ -88,14 +88,6 @@ public class UpcomingTripsActivity extends AppCompatActivity {
 
         sharedPreferencesManager=new SharedPreferencesManager(this);
 
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(UpcomingTripsActivity.this, AddBtnActivity.class);
-                startActivityForResult(i, 55);
-            }
-        });
 
 
         internetConnection=new InternetConnection(this);
@@ -126,19 +118,7 @@ public class UpcomingTripsActivity extends AppCompatActivity {
         userMail.setText(sharedPreferencesManager.getCurrentUserEmail());
 
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-//        mAppBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.nav_home, R.id.nav_history, R.id.nav_report)
-//                .setDrawerLayout(drawer)
-//                .build();
 
-
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-//        NavigationUI.setupWithNavController(toolbar, navController, mAppBarConfiguration);
-//
-//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
 
     }

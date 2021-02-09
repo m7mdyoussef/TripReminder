@@ -16,39 +16,31 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:weightSum="1"
+        android:weightSum="2"
+        android:gravity="center_horizontal"
         >
 
         <Button
             android:id="@+id/add_trip_btn"
-            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="75dp"
-            android:layout_weight="0.5"
+            android:layout_weight="1.5"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:background="@drawable/login_button"
             android:text="@string/add_trip"
             android:textColor="@color/white"
+
             android:textSize="8pt"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
             app:icon="@drawable/ic_note_add_24px"/>
 
-        <Button
-            android:id="@+id/cancel_btn"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/login_button"
-            android:text="@string/cancel"
-            android:textColor="@color/white"
-            android:textSize="8pt"
-            app:icon="@drawable/ic_note_add_24px"/>
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
         android:background="@android:color/transparent"
         app:layout_constraintBottom_toTopOf="@+id/dddd"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,9 +62,7 @@
                 <Spinner
                     android:id="@+id/trip_way_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:textColor="#ffffff"
-                    android:textColorHint="#ffffff" />
+                    android:layout_height="48dp" />
 
 
             </LinearLayout>
@@ -102,8 +92,7 @@
                         android:layout_marginHorizontal="8dp"
                         android:layout_weight="1"
                         android:hint="@string/add_a_note"
-                        android:textColor="#ffffff"
-                        android:textColorHint="#ffffff"
+
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:startIconContentDescription="Pick Date">
@@ -129,58 +118,70 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
+                android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/dest_autoComplete_Frag">
 
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_weight="1"
-                    android:hint="@string/date"
-                    android:textColor="#ffffff"
-                    android:textColorHint="#ffffff"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-                    app:startIconContentDescription="Pick Date"
-                    app:startIconDrawable="@drawable/ic_date_range_24px">
+                    android:text="@string/Going" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/dateTextField"
-                        android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:focusable="false"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_weight="1"
+                        android:hint="@string/date"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                        app:startIconContentDescription="Pick Date"
+                        app:startIconDrawable="@drawable/ic_date_range_24px">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/dateTextField"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:editable="false"
+                            android:focusable="false"
 
 
-                        />
+                            />
 
-                </com.google.android.material.textfield.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_weight="1"
-                    android:hint="@string/time"
-                    android:textColor="#ffffff"
-                    android:textColorHint="#ffffff"
-                    app:startIconContentDescription="Pick Date"
-                    app:startIconDrawable="@drawable/ic_schedule_24px">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/timeTextField"
-                        android:layout_width="match_parent"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:focusable="false" />
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_weight="1"
+                        android:hint="@string/time"
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        app:startIconContentDescription="Pick Date"
+                        app:startIconDrawable="@drawable/ic_schedule_24px">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/timeTextField"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:editable="false"
+                            android:focusable="false" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
             </LinearLayout>
 
 
@@ -188,63 +189,77 @@
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@+id/repeat_spin_linearlayout"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/TextInputDate2"
-
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/BackText"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="24dp"
                     android:layout_weight="1"
-                    android:hint="@string/date"
-                    android:textColor="#ffffff"
-                    android:textColorHint="#ffffff"
+                    android:text="@string/Back"
                     android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/autoCompleteTVDestination"
-                    app:startIconContentDescription="Pick Date"
-                    app:startIconDrawable="@drawable/ic_date_range_24px">
+                    />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/dateEdit_back"
-                        android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="2"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/TextInputDate2"
+
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:focusable="false"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_weight="1"
+                        android:hint="@string/date"
 
-                        />
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTVDestination"
+                        app:startIconContentDescription="Pick Date"
+                        app:startIconDrawable="@drawable/ic_date_range_24px">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/dateEdit_back"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:editable="false"
+                            android:focusable="false"
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/TextInputTime2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_weight="1"
-                    android:hint="@string/time"
-                    android:textColor="#ffffff"
-                    android:textColorHint="#ffffff"
-                    android:visibility="gone"
-                    app:startIconContentDescription="Pick Date"
-                    app:startIconDrawable="@drawable/ic_schedule_24px">
+                            />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/clockEdit_back"
-                        android:layout_width="match_parent"
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/TextInputTime2"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:editable="false"
-                        android:focusable="false" />
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_weight="1"
+                        android:hint="@string/time"
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:visibility="gone"
+                        app:startIconContentDescription="Pick Date"
+                        app:startIconDrawable="@drawable/ic_schedule_24px">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/clockEdit_back"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:editable="false"
+                            android:focusable="false" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
             </LinearLayout>
 
 
@@ -255,8 +270,7 @@
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/start_point"
-                android:textColor="#ffffff"
-                android:textColorHint="#ffffff"
+
                 android:textSize="6pt"
                 app:layout_constraintTop_toBottomOf="@+id/trip_name_text_field" />
 
@@ -266,8 +280,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:text="@string/destination"
-                android:textColor="#ffffff"
-                android:textColorHint="#ffffff"
+
                 android:textSize="6pt"
                 app:layout_constraintTop_toBottomOf="@+id/start_autoComplete_Frag" />
 
@@ -277,8 +290,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:hint="@string/trip_name"
-                android:textColor="#ffffff"
-                android:textColorHint="#ffffff"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -286,7 +297,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Trip Name"/>
+                    android:hint="Trip Name" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -296,8 +307,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
-                android:textColor="#ffffff"
-                android:textColorHint="#ffffff"
+
                 app:layout_constraintTop_toBottomOf="@+id/dummytv"
                 tools:layout_editor_absoluteX="8dp" />
 
@@ -307,8 +317,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
-                android:textColor="#ffffff"
-                android:textColorHint="#ffffff"
+
                 app:layout_constraintTop_toBottomOf="@+id/dummytv2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

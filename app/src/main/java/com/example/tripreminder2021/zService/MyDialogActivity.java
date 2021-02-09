@@ -2,6 +2,7 @@ package com.example.tripreminder2021.zService;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -69,7 +70,7 @@ public class MyDialogActivity extends Activity {
 
         Intent i = getIntent();
         Bundle b = i.getBundleExtra(RECEIVED_TRIP);
-            TripModel tm = (TripModel) b.getParcelable(RECEIVED_TRIP_SEND_SERIAL);
+            TripModel tm = b.getParcelable(RECEIVED_TRIP_SEND_SERIAL);
         if (tm != null) {
             startAlarmRingTone(r);
 
@@ -109,6 +110,11 @@ public class MyDialogActivity extends Activity {
                             askPermission();
                             Toast.makeText(this, "You need System Alert Window Permission to do this", Toast.LENGTH_SHORT).show();
                         }
+                        NotificationManager notificationManager = (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+                        if (notificationManager != null) {
+                            notificationManager.cancel(12354);
+                        }
+
 
                         finish();
                     })
@@ -121,12 +127,17 @@ public class MyDialogActivity extends Activity {
                             firebaseDatabaseServices.addTripToHistory(tm.getTrip_id());
                             firebaseDatabaseServices.changeTripStatus(tm.getTrip_id(),TripStatus.Canceled);
 
+                            NotificationManager notificationManager = (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+                            if (notificationManager != null) {
+                                notificationManager.cancel(12354);
+                            }
+
                             stopAlarmRingTone(r);
                             alertDialog.dismiss();
                             finish();
                         }
                     })
-                    .setCancelable(false).setOnDismissListener(dialog -> {
+                    .setCancelable(true).setOnDismissListener(dialog -> {
                         stopAlarmRingTone(r);
 
                     });
@@ -191,49 +202,49 @@ public class MyDialogActivity extends Activity {
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_OK) {
-            if (checkPermission()) {
-            } else {
-                reqPermission();
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == RESULT_OK) {
+//            if (checkPermission()) {
+//            } else {
+//                reqPermission();
+//            }
+//        }
+//    }
 
 
-    private boolean checkPermission() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                reqPermission();
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            return true;
-        }
+//    private boolean checkPermission() {
+//        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+//            if (!Settings.canDrawOverlays(this)) {
+//                reqPermission();
+//                return false;
+//            } else {
+//                return true;
+//            }
+//        } else {
+//            return true;
+//        }
+//
+//    }
 
-    }
-
-    private void reqPermission() {
-        final android.app.AlertDialog.Builder alertBuilder = new android.app.AlertDialog.Builder(this);
-        alertBuilder.setCancelable(true);
-        alertBuilder.setTitle("Screen overlay detected");
-        alertBuilder.setMessage("Enable 'Draw over other apps' in your system setting.");
-        alertBuilder.setPositiveButton("OPEN SETTINGS", new DialogInterface.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + getPackageName()));
-                startActivityForResult(intent, RESULT_OK);
-            }
-        });
-        alert = alertBuilder.create();
-        alert.show();
-    }
+//    private void reqPermission() {
+//        final android.app.AlertDialog.Builder alertBuilder = new android.app.AlertDialog.Builder(this);
+//        alertBuilder.setCancelable(true);
+//        alertBuilder.setTitle("Screen overlay detected");
+//        alertBuilder.setMessage("Enable 'Draw over other apps' in your system setting.");
+//        alertBuilder.setPositiveButton("OPEN SETTINGS", new DialogInterface.OnClickListener() {
+//            @RequiresApi(api = Build.VERSION_CODES.M)
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+//                        Uri.parse("package:" + getPackageName()));
+//                startActivityForResult(intent, RESULT_OK);
+//            }
+//        });
+//        alert = alertBuilder.create();
+//        alert.show();
+//    }
 
 
 

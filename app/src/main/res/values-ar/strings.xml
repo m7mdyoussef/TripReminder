@@ -64,9 +64,26 @@
     <string name="changeLanguage">تغيير اللغة</string>
     <string name="your_notes">ملاحظاتك   >> اضغط علي احرف البيان للتقليص</string>
     <string name="title_activity_maps">Map</string>
-    <string name="hour">H</string>
-    <string name="update">Update</string>
 
+    <string name="Going">ذهاب</string>
+    <string name="Back">عودة</string>
+    <string name="total_trips">كل الرحلات</string>
+    <string name="total_done_trips">كل الرحلات المكتملة</string>
+    <string name="total_canceled_trips">كل الرحلات الملغية</string>
+    <string name="total_distance_trips">المسافات الكلية</string>
+    <string name="average_time">معدل الوقت</string>
+    <string name="total_average_speed">معدل السرعة</string>
+    <string name="this_report_does_not_include_deleted_trips">هذا التقرير لا يشمل الرحلات الملغية</string>
+    <string name="no_internet">لا يوجد اتصال بالانترنت</string>
+    <string name="internet_back">متصل بالانترنت</string>
+    <string name="hour">ساعة</string>
+    <string name="km">كم</string>
+    <string name="click_again_to_exit">اضغط مجددا للخروج</string>
+    <string name="update">تحديث</string>
+    <string name="add_your_note">أضف مذكرتك</string>
+    <string name="save_your_notes">حفظ</string>
+    <string name="no_upcoming_trip_available">"لا يوجد رحلات حالية"</string>
+    <string name="no_history_trip_available">"لا يوجد رحلات في السجل"</string>
 
     <string-array name="times_array">
         <item>عدم تكرار التنبيه</item>

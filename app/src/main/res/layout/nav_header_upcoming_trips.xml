@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="176dp"
     android:background="@drawable/side_nav_bar"
-    android:backgroundTint="@color/colorPrimary"
+    android:backgroundTint="@color/colorPrimaryDark"
     android:gravity="bottom"
     android:orientation="vertical"
     android:paddingLeft="16dp"
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="16dp"
-        android:textColor="#000"
+        android:textColor="#ffffff"
         android:maxLines="1"
         android:layout_marginBottom="5dp"
         android:gravity="center"/>

@@ -1,5 +1,6 @@
 package com.example.tripreminder2021.ui.navigation.upComing;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +18,10 @@ import com.example.tripreminder2021.pojo.TripModel;
 import com.example.tripreminder2021.pojo.TripStatus;
 import com.example.tripreminder2021.repository.FirebaseDatabaseServices;
 import com.example.tripreminder2021.requests.InternetConnection;
+import com.example.tripreminder2021.ui.activities.AddBtnActivity;
+import com.example.tripreminder2021.ui.activities.UpcomingTripsActivity;
 import com.example.tripreminder2021.viewModels.UpcomingViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -39,6 +43,7 @@ public class UpcomingFragment extends Fragment {
     private ProgressBar progressBar;
     private TextView textView;
     private InternetConnection internetConnection;
+    FloatingActionButton fab;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -58,6 +63,16 @@ public class UpcomingFragment extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(root.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
+
+        fab = root.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), AddBtnActivity.class);
+                startActivityForResult(i, 55);
+            }
+        });
+
 
         internetConnection.observe(getViewLifecycleOwner(),aBoolean -> {
             if (aBoolean)

@@ -33,6 +33,7 @@ public class DialognotificationService extends Service {
     private static final String TAG = "TAG";
     private TripModel tm;
     private final IBinder localBinder = new MyBinder();
+    NotificationManager man;
 
     @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
     public void onResult(TripModel result){
@@ -82,7 +83,8 @@ public class DialognotificationService extends Service {
                     CHANNEL_ID,
                     "Trip Reminder",
                     NotificationManager.IMPORTANCE_HIGH);
-            NotificationManager man = (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
+
+            man = (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
 
             man.createNotificationChannel(nc);
         }
@@ -103,9 +105,11 @@ public class DialognotificationService extends Service {
                 .setContentTitle("Trip Reminder")
                 .setContentText("You have an upcoming trip").setTicker("Notification!")
                 .setContentIntent(pendingIntent).setSmallIcon(R.drawable.ic_date_range_24px)
+                .setAutoCancel(true)
+                .setOngoing(true)
                 .build();
 
-        startForeground(12354, notification);
+        man.notify(12354, notification);
 
     }
 
