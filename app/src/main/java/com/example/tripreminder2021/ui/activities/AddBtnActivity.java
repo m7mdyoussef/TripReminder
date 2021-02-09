@@ -267,7 +267,6 @@ public class AddBtnActivity extends AppCompatActivity {
                         startAlarm(newTrip,i);
                         setResult(Activity.RESULT_OK, resultIntent);
 
-                        Toast.makeText(this, " "+i, Toast.LENGTH_SHORT).show();
 
 
                         Toast.makeText(this, "Added Successfully", Toast.LENGTH_SHORT).show();
@@ -327,7 +326,6 @@ public class AddBtnActivity extends AppCompatActivity {
                             startAlarmBack(TripBack,k);
                             setResult(Activity.RESULT_OK, resultIntentback);
 
-                            Toast.makeText(this, ""+j+"//"+k, Toast.LENGTH_LONG).show();
 
                             Toast.makeText(this, "Added Successfully", Toast.LENGTH_SHORT).show();
                             finish();
@@ -575,7 +573,6 @@ public class AddBtnActivity extends AppCompatActivity {
         else
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
 
-        Toast.makeText(this, DateFormat.getDateTimeInstance().format(mCalendar.getTime()), Toast.LENGTH_LONG).show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
