@@ -126,7 +126,7 @@ public class AddBtnActivity extends AppCompatActivity {
     AutocompleteSupportFragment placeStartPointAutoComplete;
     AutocompleteSupportFragment placeDestPointAutoComplete;
 
-    private Date date_date;
+    private Date date_date,date_date2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -313,7 +313,7 @@ public class AddBtnActivity extends AppCompatActivity {
                             int k = random3.nextInt((1000000000 - 1) + 1) + 1;
                             TripModel TripBack = new TripModel(k,"2",selectedEndPlace, selectedStartPlace,
                                    // dateEdit_back.getText().toString(),
-                                    date_date.getTime(),
+                                    date_date2.getTime(),
                                     clockEdit_back.getText().toString(),
                                     tripNameTextField.getEditText().getText().toString()+ " Back"
                                     , "start", notesList, myCalendarRound.getTime().toString(),
@@ -356,8 +356,8 @@ public class AddBtnActivity extends AppCompatActivity {
 
 
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-YYYY");
-                    dateTextField.setText(simpleDateFormat.format(myCalendarRound.getTime()));
-                    date_date = myCalendarRound.getTime();
+                    dateTextField.setText(simpleDateFormat.format(mCalendar.getTime()));
+                    date_date = mCalendar.getTime();
 
                     // String myFormat = DateFormat.getDateInstance(DateFormat.FULL).format(myCalendarRound.getTime());
                     ; //In which you need put here
@@ -425,7 +425,7 @@ public class AddBtnActivity extends AppCompatActivity {
 
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-YYYY");
                     dateEdit_back.setText(simpleDateFormat.format(myCalendarRound.getTime()));
-                    date_date = myCalendarRound.getTime();
+                    date_date2 = myCalendarRound.getTime();
 
                 };
                 new DatePickerDialog(AddBtnActivity.this, date1, myCalendarRound
