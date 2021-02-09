@@ -197,6 +197,7 @@ public int randomNumber;
         dest.writeString(trip_id);
         dest.writeString(include_in);
         dest.writeStringList(notes);
+        dest.writeInt(randomNumber);
     }
 
 }

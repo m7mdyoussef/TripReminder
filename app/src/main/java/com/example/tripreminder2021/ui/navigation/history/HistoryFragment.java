@@ -107,7 +107,7 @@ public class HistoryFragment extends Fragment {
         else {
             Intent intent=new Intent(getContext(),MapsActivity.class);
             Bundle args = new Bundle();
-            args.putSerializable("LIST",(Serializable) tripModels);
+            args.putSerializable("LIST",(Serializable)tripModels);
             intent.putExtra("BUNDLE",args);
             startActivity(intent);
         }
